@@ -15,9 +15,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Log.d("TAG", "--------------------> " + UnitMain.get_java_str("=="));
-        //Log.d("TAG","--------------------> " + UnitMain.getStringFormC());
+        Log.d("TAG","--------------------> " + UnitMain.getStringFormC());
         textView = (TextView) findViewById(R.id.textView);
         //textView.setText(UnitMain.getStringFormC());
-        textView.setText(UnitMain.get_java_str(null));
+        textView.setText(UnitMain.get_java_str(null) + UnitMain.getStringFormC());
     }
 }
