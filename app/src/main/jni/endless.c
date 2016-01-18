@@ -5,7 +5,7 @@
 #include "endless.h"
 
 
-JNIEXPORT jstring JNICALL Java_abc_bookcl_test01_TSUnit_UnitMain_getStringFormC
+JNIEXPORT jstring JNICALL Java_abc_bookcl_test01_MainActivity_getStringFormC
         (JNIEnv *env, jobject obj){
     return (*env)->NewStringUTF(env,"Test By JamesL");
 }
