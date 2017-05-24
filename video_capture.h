@@ -16,6 +16,7 @@ struct camera {
 	int display_depth;
 	int image_size;
 	int frame_number;
+	int frame_rate;
 	struct v4l2_capability v4l2_cap;
 	struct v4l2_cropcap v4l2_cropcap;
 	struct v4l2_format v4l2_fmt;
@@ -31,6 +32,7 @@ void open_camera(struct camera *cam);
 void close_camera(struct camera *cam);
 
 int read_and_encode_frame(struct camera *cam);
+void v4l2_getFPS(struct camera *cam);
 
 void start_capturing(struct camera *cam);
 void stop_capturing(struct camera *cam);

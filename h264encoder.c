@@ -13,9 +13,9 @@ void compress_begin(Encoder *en, int width, int height,int frameRate) {
 	en->param->i_height = height; //set frame height
 	en->param->i_csp = X264_CSP_I422; //格式422
 	en->param->i_threads = 1;  //并行编码          
-	//en->param->i_fps_num = frameRate; //帧率         
-	//en->param->i_fps_den = 1;
-	en->param->i_keyint_max = 60;//关键帧
+	en->param->i_fps_num = frameRate; //帧率         
+	en->param->i_fps_den = 1;
+	en->param->i_keyint_max = frameRate * 2;//关键帧
 	en->param->b_repeat_headers = 1;  // 重复SPS/PPS 放到关键帧前面 
         en->param->b_cabac = 1;//熵编码          
 

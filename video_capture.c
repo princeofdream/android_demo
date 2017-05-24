@@ -92,7 +92,7 @@ void close_file() {
 }
 
 void init_encoder(struct camera *cam) {
-	compress_begin(&en, cam->width, cam->height,30);
+	compress_begin(&en, cam->width, cam->height,cam->frame_rate);
 	h264_buf = (uint8_t *) malloc(
 			sizeof(uint8_t) * cam->width * cam->height * 3); // 设置缓冲区
 }
@@ -110,7 +110,7 @@ void encode_frame(uint8_t *yuv_frame, size_t yuv_length) {
 	if (yuv_frame[0] == '\0')
 		return;
 	h264_length = compress_frame(&en, -1, yuv_frame, h264_buf);
-	printf("h264_length = %d\n",h264_length);
+	//printf("h264_length = %d\n",h264_length);
 	if (h264_length > 0) {
 		//写h264文件
 		fwrite(h264_buf, h264_length, 1, h264_fp);
@@ -123,7 +123,7 @@ void encode_frame(uint8_t *yuv_frame, size_t yuv_length) {
 int read_and_encode_frame(struct camera *cam) {
 	struct v4l2_buffer buf;
 
-	printf("in read_frame\n");
+	//printf("in read_frame\n");
 
 	CLEAR(buf);
 
@@ -149,6 +149,7 @@ int read_and_encode_frame(struct camera *cam) {
 
 	return 1;
 }
+
 
 void start_capturing(struct camera *cam) {
 	unsigned int i;
@@ -329,6 +330,62 @@ void init_camera(struct camera *cam) {
 	init_mmap(cam);
 
 }
+
+void v4l2_getFPS(struct camera *cam){
+	printf("in v4l2_getFPS");
+	int okCounter = 0;
+	long int timeB4 = 0 ;
+	long int timeFt = 0 ;
+	double usedTime = 0;
+	open_camera(cam);
+	init_camera(cam);
+	start_capturing(cam);
+	init_encoder(cam);
+	init_file();
+	printf("b4 get time");
+	timeB4 = getCurrentTime();
+	for(int i = 0;i<130;i++){
+		fd_set fds;
+		struct timeval tv;
+		int r;
+
+		FD_ZERO(&fds);
+		FD_SET(cam->fd, &fds);
+
+		/* Timeout. */
+		tv.tv_sec = 2;
+		tv.tv_usec = 0;
+
+		r = select(cam->fd + 1, &fds, NULL, NULL, &tv);
+
+		if (-1 == r) {
+			if (EINTR == errno)
+				continue;
+
+			errno_exit("select");
+		}
+
+		if (0 == r) {
+			fprintf(stderr, "select timeout\n");
+			exit(EXIT_FAILURE);
+		}
+
+		if(1 == read_and_encode_frame(cam)){
+			okCounter++;
+		}
+	}
+	timeFt = getCurrentTime();
+	usedTime = ((double)(timeFt - timeB4))/1000;
+	cam->frame_rate = (int)(okCounter/usedTime);
+	printf("v4l2_getFPS:\n okCounter=%d \n usedTime = %lf \n frameRate = %d \n",okCounter,usedTime,cam->frame_rate);
+	stop_capturing(cam);
+	uninit_camera(cam);
+	close_camera(cam);
+	close_file();
+	close_encoder();
+	printf("\n v4l2_getFPS End ! \n");
+}
+
 
 void v4l2_init(struct camera *cam) {
 	open_camera(cam);

@@ -12,13 +12,13 @@ pthread_t mythread;
 void capture_encode_thread(void) {
 	int count = 1;
 	for (;;) {
-		printf("\n\n-->this is the %dth frame\n", count);
-		if (count++ >= 1000) // 采集数据
+		//printf("\n\n-->this is the %dth frame\n", count);
+		if (count++ >= 1500) // 采集数据
 				{
 			printf("------need to exit from thread------- \n");
 			break;
 		}
-
+		cam->frame_number = count;
 		fd_set fds;
 		struct timeval tv;
 		int r;
@@ -61,8 +61,9 @@ int main(int argc, char **argv) {
 	cam->buffers = NULL;
 	cam->width = 640;
 	cam->height = 480;
+	cam->frame_rate = 25;
 	cam->display_depth = 5; /* RGB24 */
-	v4l2_getFPS();
+	v4l2_getFPS(cam);
 	v4l2_init(cam);
 	if (0 != pthread_create(&mythread, NULL, (void *) capture_encode_thread, NULL)) {
 		fprintf(stderr, "thread create fail\n");
