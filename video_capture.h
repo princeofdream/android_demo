@@ -42,6 +42,11 @@ void uninit_camera(struct camera *cam);
 
 void init_mmap(struct camera *cam);
 
+char* get_h264_file_name();
+void init_file();
+void close_file();
+
+void v4l2_capture(struct camera *cam);
 void v4l2_init(struct camera *cam);
 void v4l2_close(struct camera *cam);
 

@@ -9,7 +9,7 @@ HEADER =
 OBJS = main.o video_capture.o h264encoder.o
 
 all:  $(OBJS)
-	$(CC) -g -o $(APP) $(OBJS) $(LIBS) $(DEP_LIBS)  
+	$(CC) -g -o $(APP) $(OBJS) $(LIBS) $(DEP_LIBS)
 
 clean:
 	rm -f *.o a.out $(APP) core *~

@@ -4,6 +4,11 @@
 #include <time.h>
 #include "h264encoder.h"
 
+typedef int LONG;  
+typedef unsigned int DWORD;  
+typedef unsigned short WORD;  
+
+
 void compress_begin(Encoder *en, int width, int height,int frameRate) {
 	en->param = (x264_param_t *) malloc(sizeof(x264_param_t));
 	en->picture = (x264_picture_t *) malloc(sizeof(x264_picture_t));
@@ -17,10 +22,8 @@ void compress_begin(Encoder *en, int width, int height,int frameRate) {
 	en->param->i_fps_den = 1;
 	en->param->i_keyint_max = frameRate * 2;//å…³é”®å¸§
 	en->param->b_repeat_headers = 1;  // é‡å¤SPS/PPS æ”¾åˆ°å…³é”®å¸§å‰é¢ 
-        en->param->b_cabac = 1;//ç†µç¼–ç           
-
-
-	// en->param->i_log_level = X264_LOG_NONE;
+    en->param->b_cabac = 1;//ç†µç¼–ç           
+	en->param->i_log_level = X264_LOG_NONE;
 
 	//rc
 	en->param->rc.i_rc_method = X264_RC_ABR; //å‚æ•°i_rc_methodè¡¨ç¤ºç ç‡æ§åˆ¶ï¼ŒCQP(æ’å®šè´¨é‡)ï¼ŒCRF(æ’å®šç ç‡)ï¼ŒABR(å¹³å‡ç ç‡)
@@ -134,3 +137,148 @@ long int getCurrentTime()
    gettimeofday(&tv,NULL);    
    return tv.tv_sec * 1000 + tv.tv_usec / 1000;    
 } 
+
+int sign3 = 0;
+
+int yuvtorgb0(unsigned char *yuv, unsigned char *rgb, unsigned int width, unsigned int height)
+{
+     unsigned int in, out;
+     int y0, u, y1, v;
+     unsigned int pixel24;
+     unsigned char *pixel = (unsigned char *)&pixel24;
+     unsigned int size = width*height*2;
+
+     for(in = 0, out = 0; in < size; in += 4, out += 6)
+     {
+          y0 = yuv[in+0];
+          u  = yuv[in+1];
+          y1 = yuv[in+2];
+          v  = yuv[in+3];
+
+		  sign3 = 1;
+          pixel24 = yuvtorgb(y0, u, v);
+          rgb[out+0] = pixel[0];    //for QT
+          rgb[out+1] = pixel[1];
+          rgb[out+2] = pixel[2];
+          //rgb[out+0] = pixel[2];  //for iplimage
+          //rgb[out+1] = pixel[1];
+          //rgb[out+2] = pixel[0];
+
+          //sign3 = true;
+          pixel24 = yuvtorgb(y1, u, v);
+          rgb[out+3] = pixel[0];
+          rgb[out+4] = pixel[1];
+          rgb[out+5] = pixel[2];
+          //rgb[out+3] = pixel[2];
+          //rgb[out+4] = pixel[1];
+          //rgb[out+5] = pixel[0];
+     }
+     return 0;
+}
+
+int yuvtorgb(int y, int u, int v)
+{
+     unsigned int pixel24 = 0;
+     unsigned char *pixel = (unsigned char *)&pixel24;
+     int r, g, b;
+     static long int ruv, guv, buv;
+
+     if(sign3)
+     {
+         sign3 = 0;
+         ruv = 1159*(v-128);
+         guv = 380*(u-128) + 813*(v-128);
+         buv = 2018*(u-128);
+     }
+
+     r = (1164*(y-16) + ruv) / 1000;
+     g = (1164*(y-16) - guv) / 1000;
+     b = (1164*(y-16) + buv) / 1000;
+
+     if(r > 255) r = 255;
+     if(g > 255) g = 255;
+     if(b > 255) b = 255;
+     if(r < 0) r = 0;
+     if(g < 0) g = 0;
+     if(b < 0) b = 0;
+
+     pixel[0] = r;
+     pixel[1] = g;
+     pixel[2] = b;
+
+     return pixel24;
+}
+
+  
+typedef struct {  
+        WORD    bfType;  
+        DWORD   bfSize;  
+        WORD    bfReserved1;  
+        WORD    bfReserved2;  
+        DWORD   bfOffBits;  
+} BMPFILEHEADER_T;  
+  
+typedef struct{  
+        DWORD      biSize;  
+        LONG       biWidth;  
+        LONG       biHeight;  
+        WORD       biPlanes;  
+        WORD       biBitCount;  
+        DWORD      biCompression;  
+        DWORD      biSizeImage;  
+        LONG       biXPelsPerMeter;  
+        LONG       biYPelsPerMeter;  
+        DWORD      biClrUsed;  
+        DWORD      biClrImportant;  
+} BMPINFOHEADER_T;  
+  
+void savebmp(unsigned char * pdata,FILE *bmp_file, int width, int height )  
+{      //·Ö±ğÎªrgbÊı¾İ£¬Òª±£´æµÄbmpÎÄ¼şÃû£¬Í¼Æ¬³¤¿í  
+       int size = width*height*3*sizeof(unsigned char); // Ã¿¸öÏñËØµã3¸ö×Ö½Ú  
+       // Î»Í¼µÚÒ»²¿·Ö£¬ÎÄ¼şĞÅÏ¢  
+       BMPFILEHEADER_T bfh;  
+       bfh.bfType = (WORD)0x4d42;  //bm  
+       bfh.bfSize = size  // data size  
+              + 14 // first section size  
+              + 40 // second section size  
+              ;  
+       bfh.bfReserved1 = 0; // reserved  
+       bfh.bfReserved2 = 0; // reserved  
+       bfh.bfOffBits = (DWORD)0x36;
+//ÕæÕıµÄÊı¾İµÄÎ»ÖÃ  
+  
+       // Î»Í¼µÚ¶ş²¿·Ö£¬Êı¾İĞÅÏ¢  
+       BMPINFOHEADER_T bih;  
+       bih.biSize = 40;  
+       bih.biWidth = width;  
+       bih.biHeight = -height;//BMP Í¼Æ¬´Ó×îºóÒ»¸öµã¿ªÊ¼É¨Ãè£¬ÏÔÊ¾Ê±Í¼Æ¬ÊÇµ¹×ÅµÄ£¬ËùÒÔÓÃ-height£¬ÕâÑùÍ¼Æ¬¾ÍÕıÁË  
+       bih.biPlanes = 1;//Îª1£¬²»ÓÃ¸Ä  
+       bih.biBitCount = 24;  
+       bih.biCompression = 0;//²»Ñ¹Ëõ  
+       bih.biSizeImage = size;  
+       bih.biXPelsPerMeter = 2835 ;//ÏñËØÃ¿Ã×  
+       bih.biYPelsPerMeter = 2835 ;  
+       bih.biClrUsed = 0;//ÒÑÓÃ¹ıµÄÑÕÉ«£¬24Î»µÄÎª0  
+       bih.biClrImportant = 0;//Ã¿¸öÏñËØ¶¼ÖØÒª  
+       if( !bmp_file ) return;  
+       fwrite(&bfh.bfType, sizeof(bfh.bfType), 1,  bmp_file );
+	   fwrite(&bfh.bfSize, sizeof(bfh.bfSize), 1,  bmp_file );
+	   fwrite(&bfh.bfReserved1, sizeof(bfh.bfReserved1), 1,  bmp_file );
+       fwrite(&bfh.bfReserved2, sizeof(bfh.bfReserved2), 1, bmp_file);  
+       fwrite(&bfh.bfOffBits, sizeof(bfh.bfOffBits), 1, bmp_file);
+	   fwrite(&bih.biSize, sizeof(bih.biSize), 1, bmp_file);
+	   fwrite(&bih.biWidth, sizeof(bih.biWidth), 1, bmp_file);
+	   fwrite(&bih.biHeight, sizeof(bih.biHeight), 1, bmp_file);
+	   fwrite(&bih.biPlanes, sizeof(bih.biPlanes), 1, bmp_file);
+	   fwrite(&bih.biBitCount, sizeof(bih.biBitCount), 1, bmp_file);
+	   fwrite(&bih.biCompression, sizeof(bih.biCompression), 1, bmp_file);
+	   fwrite(&bih.biSizeImage, sizeof(bih.biSizeImage), 1, bmp_file);
+	   fwrite(&bih.biXPelsPerMeter, sizeof(bih.biXPelsPerMeter), 1, bmp_file);
+	   fwrite(&bih.biYPelsPerMeter, sizeof(bih.biYPelsPerMeter), 1, bmp_file);
+	   fwrite(&bih.biClrUsed, sizeof(bih.biClrUsed), 1, bmp_file);
+	   fwrite(&bih.biClrImportant, sizeof(bih.biClrImportant), 1, bmp_file);
+       //fwrite( &bih, 40,1,bmp_file );  
+       fwrite(pdata,size,1,bmp_file);
+	   fclose( bmp_file );  
+}
+

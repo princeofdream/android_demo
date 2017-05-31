@@ -8,15 +8,22 @@
 
 struct camera *cam;
 pthread_t mythread;
+int isEndEncode = 0;
+int isWaitEncode = 0;
+
 
 void capture_encode_thread(void) {
+	printf("thread created \n");
 	int count = 1;
 	for (;;) {
 		//printf("\n\n-->this is the %dth frame\n", count);
-		if (count++ >= 1500) // 采集数据
+		if (isEndEncode) //end Encode
 				{
-			printf("------need to exit from thread------- \n");
+			printf("exit from thread \n");
 			break;
+		}
+		if (isWaitEncode) {//short time wait !!
+			continue;
 		}
 		cam->frame_number = count;
 		fd_set fds;
@@ -52,6 +59,8 @@ void capture_encode_thread(void) {
 }
 
 int main(int argc, char **argv) {
+	int num = 0;
+	int isEndMain = 0;
 	cam = (struct camera *) malloc(sizeof(struct camera));
 	if (!cam) {
 		printf("malloc camera failure!\n");
@@ -63,13 +72,53 @@ int main(int argc, char **argv) {
 	cam->height = 480;
 	cam->frame_rate = 25;
 	cam->display_depth = 5; /* RGB24 */
-	v4l2_getFPS(cam);
-	v4l2_init(cam);
-	if (0 != pthread_create(&mythread, NULL, (void *) capture_encode_thread, NULL)) {
-		fprintf(stderr, "thread create fail\n");
-	}
-	pthread_join(mythread, NULL);
-	v4l2_close(cam);
+	
+    while(1){
+		printf("0.End 1:testFPS 2:startRecord 3.stopRecord 4.switchFile 5.takePicture \n Enter a number: ");
+    	scanf("%d",&num);
+		printf("selected num:%d \n",num);
+		switch(num){
+			case 1:{//testFPS
+				v4l2_getFPS(cam);
+				break;
+			}
+			case 2:{//startRecord
+				isEndEncode = 0;
+				v4l2_init(cam);
+				if (0 != pthread_create(&mythread, NULL, (void *) capture_encode_thread, NULL)) {
+					fprintf(stderr, "thread create fail\n");
+				}
+				break;
+			}
+			case 3:{//stopRecord
+				isEndEncode = 1;
+				v4l2_close(cam);
+				break;
+			}
+			case 4:{//switchFile
+				isWaitEncode = 1;
+				close_file();
+				init_file();
+				isWaitEncode = 0;
+				break;
+			}
+			case 5:{//takePicture
+				v4l2_capture(cam);
+				break;
+			}
+			default:{
+				isEndEncode = 0;
+				v4l2_close(cam);
+				free(cam);
+				isEndMain = 1;
+				break;
+			}
+		}
+		if(isEndMain) break;
+		
+    }
 	printf("-----------end program------------\n");
 	return 0;
+
+	
 }

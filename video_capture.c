@@ -24,12 +24,13 @@ typedef unsigned char uint8_t;
 
 static char *dev_name = "/dev/video0";
 
-char h264_file_name[100] = "usbCam.h264\0";
+char h264_file_name[100] ;
 FILE *h264_fp;
+FILE *bmp_fp;
 uint8_t *h264_buf;
 
-char yuv_file_name[100] = "usbCam.yuv\0";
-FILE *yuv_fp;
+//char yuv_file_name[100] = "usbCam.yuv\0";
+//FILE *yuv_fp;
 
 unsigned int n_buffers = 0;
 DIR *dirp;
@@ -81,14 +82,31 @@ void close_camera(struct camera *cam) {
 	cam->fd = -1;
 }
 
-void init_file() {
-	h264_fp = fopen(h264_file_name, "wa+");
-	yuv_fp = fopen(yuv_file_name, "wa+");
+char* get_h264_file_name(int isphoto){
+	time_t rawtime;
+	struct tm * timeinfo;
+	time ( &rawtime );
+	timeinfo = localtime ( &rawtime );
+	if(isphoto) strftime(h264_file_name,100,"./photo/%Y_%m_%d-%I_%M_%S.bmp",timeinfo);
+	else strftime(h264_file_name,100,"./video/%Y_%m_%d-%I_%M_%S.h264",timeinfo);
+	printf("new file name :%s \n",h264_file_name);
+	return h264_file_name;
 }
+
+void init_file() {
+	h264_fp = fopen(get_h264_file_name(0), "wa+");
+	//yuv_fp = fopen(yuv_file_name, "wa+");
+}
+
+void init_photo() {
+	bmp_fp = fopen(get_h264_file_name(1), "wa+");
+	//yuv_fp = fopen(yuv_file_name, "wa+");
+}
+
 
 void close_file() {
 	fclose(h264_fp);
-	fclose(yuv_fp);
+	//fclose(yuv_fp);
 }
 
 void init_encoder(struct camera *cam) {
@@ -117,7 +135,7 @@ void encode_frame(uint8_t *yuv_frame, size_t yuv_length) {
 	}
 
 	//写yuv文件
-	fwrite(yuv_frame, yuv_length, 1, yuv_fp);
+	//fwrite(yuv_frame, yuv_length, 1, yuv_fp);
 }
 
 int read_and_encode_frame(struct camera *cam) {
@@ -149,6 +167,42 @@ int read_and_encode_frame(struct camera *cam) {
 
 	return 1;
 }
+
+int get_and_save_photo(struct camera *cam) {
+	unsigned int width = cam->width;
+	unsigned int height = cam->height;
+	unsigned char rgb[width*height*3];
+	printf("get_and_save_photo rgb width=%d height=%d length=%d \n",width,height,sizeof(rgb));
+	struct v4l2_buffer buf;
+
+	//printf("in read_frame\n");
+	CLEAR(rgb);
+	CLEAR(buf);
+
+	buf.type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
+	buf.memory = V4L2_MEMORY_MMAP;
+
+	//this operator below will change buf.index and (0 <= buf.index <= 3)
+	if (-1 == xioctl(cam->fd, VIDIOC_DQBUF, &buf)) {
+		switch (errno) {
+		case EAGAIN:
+			return 0;
+		case EIO:
+			/* Could ignore EIO, see spec. */
+			/* fall through */
+		default:
+			errno_exit("VIDIOC_DQBUF");
+		}
+	}
+	yuvtorgb0(cam->buffers[buf.index].start , rgb,width,height);
+	savebmp(rgb,bmp_fp, width, height );  
+
+	if (-1 == xioctl(cam->fd, VIDIOC_QBUF, &buf))
+		errno_exit("VIDIOC_QBUF");
+
+	return 1;
+}
+
 
 
 void start_capturing(struct camera *cam) {
@@ -389,18 +443,41 @@ void v4l2_getFPS(struct camera *cam){
 
 void v4l2_init(struct camera *cam) {
 	open_camera(cam);
+	printf("open_camera \n");
 	init_camera(cam);
+	printf("init_camera \n");
 	start_capturing(cam);
+	printf("start_capturing \n");
 	init_encoder(cam);
+	printf("init_encoder \n");
 	init_file();
+	printf("init_file \n");
 }
 
-void v4l2_close(struct camera *cam) {
+void v4l2_capture(struct camera *cam) {
+	open_camera(cam);
+	printf("open_camera \n");
+	init_camera(cam);
+	printf("init_camera \n");
+	start_capturing(cam);
+	printf("start_capturing \n");
+	init_photo();
+	printf("init_photo \n");
+	get_and_save_photo(cam);
 	stop_capturing(cam);
 	uninit_camera(cam);
 	close_camera(cam);
-	free(cam);
-	close_file();
-	close_encoder();
+}
+
+
+
+void v4l2_close(struct camera *cam) {
+	if(cam->fd){
+		stop_capturing(cam);
+		uninit_camera(cam);
+		close_camera(cam);
+		close_file();
+		close_encoder();
+	}
 }
 

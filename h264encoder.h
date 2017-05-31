@@ -26,5 +26,8 @@ void compress_end(Encoder *en);
 //获取系统时间
 long int getCurrentTime();  
 
+void savebmp(unsigned char * pdata,FILE *bmp_file, int width, int height );  
+int yuvtorgb0(unsigned char *yuv, unsigned char *rgb, unsigned int width, unsigned int height);
+
 #endif
 
