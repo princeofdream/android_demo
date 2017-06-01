@@ -231,16 +231,16 @@ void start_capturing(struct camera *cam) {
 
 void stop_capturing(struct camera *cam) {
 	enum v4l2_buf_type type;
-
 	type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
 
-	if (-1 == xioctl(cam->fd, VIDIOC_STREAMOFF, &type))
+	if (-1 == xioctl(cam->fd, VIDIOC_STREAMOFF, &type)){
 		errno_exit("VIDIOC_STREAMOFF");
+	}
 
 }
 void uninit_camera(struct camera *cam) {
 	unsigned int i;
-
+	
 	for (i = 0; i < n_buffers; ++i)
 		if (-1 == munmap(cam->buffers[i].start, cam->buffers[i].length))
 			errno_exit("munmap");
@@ -464,20 +464,29 @@ void v4l2_capture(struct camera *cam) {
 	init_photo();
 	printf("init_photo \n");
 	get_and_save_photo(cam);
+	printf("get_and_save_photo \n");
 	stop_capturing(cam);
+	printf("stop_capturing \n");
 	uninit_camera(cam);
+	printf("uninit_camera \n");
 	close_camera(cam);
+	printf("close_camera \n");
 }
 
 
 
 void v4l2_close(struct camera *cam) {
-	if(cam->fd){
+	if(cam->fd > 0){
 		stop_capturing(cam);
+		printf("stop_capturing \n");
 		uninit_camera(cam);
+		printf("uninit_camera \n");
 		close_camera(cam);
+		printf("close_camera \n");
 		close_file();
+		printf("close_file \n");
 		close_encoder();
+		printf("close_encoder \n");
 	}
 }
 

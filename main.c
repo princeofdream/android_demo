@@ -76,7 +76,7 @@ int main(int argc, char **argv) {
     while(1){
 		printf("0.End 1:testFPS 2:startRecord 3.stopRecord 4.switchFile 5.takePicture \n Enter a number: ");
     	scanf("%d",&num);
-		printf("selected num:%d \n",num);
+		//printf("selected num:%d \n",num);
 		switch(num){
 			case 1:{//testFPS
 				v4l2_getFPS(cam);
