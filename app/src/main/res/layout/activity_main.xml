@@ -12,10 +12,11 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        >
+        tools:layout_editor_absoluteY="8dp"
+        tools:layout_editor_absoluteX="8dp">
 
         <Button
-            android:text="Button"
+            android:text="Button 1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/gd_main_bt"
@@ -34,11 +35,34 @@
             />-->
 
         <Button
-            android:text="Button"
+            android:text="Button 2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/gd_main_bt2"
             />
+
+        <FrameLayout
+            android:name="com.bookcl.empty.fragment_gd_main"
+            android:id="@+id/f_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <!--<Button
+                android:text="Button3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/gd_main_bt3"
+                />
+
+            <TextView
+                android:text="TextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView3"/>-->
+
+        </FrameLayout>
+
+
 
 
     </LinearLayout>
