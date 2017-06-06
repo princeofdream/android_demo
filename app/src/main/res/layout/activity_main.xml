@@ -6,64 +6,52 @@
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.bookcl.empty.MainActivity">
+    tools:context="com.bookcl.empty.MainActivity"
+    >
 
     <LinearLayout
         android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="368dp"
+        android:layout_height="551dp"
+        android:gravity="center"
         tools:layout_editor_absoluteY="8dp"
-        tools:layout_editor_absoluteX="8dp">
+        tools:layout_editor_absoluteX="8dp"
+        android:weightSum="1">
 
-        <Button
-            android:text="Button 1"
+        <TextView
+            android:id="@+id/txinfo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/gd_main_bt"
-            />
+            android:text="@string/info"/>
 
-        <!--<android.support.v4.view.ViewPager
-            android:id="@+id/container"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            />-->
-        <!--<fragment
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:name="com.bookcl.empty.gd_main"
-            android:id="@+id/fg_gd_main"
-            />-->
+            android:orientation="horizontal">
 
-        <Button
-            android:text="Button 2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/gd_main_bt2"
-            />
-
-        <FrameLayout
-            android:name="com.bookcl.empty.fragment_gd_main"
-            android:id="@+id/f_layout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" >
-
-            <!--<Button
-                android:text="Button3"
-                android:layout_width="match_parent"
+            <Button
+                android:id="@+id/main_prev"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/gd_main_bt3"
+                android:layout_weight="1"
+                android:drawableLeft="@mipmap/arrow_left"
+                android:text="@string/prev"
                 />
 
-            <TextView
-                android:text="TextView"
-                android:layout_width="match_parent"
+            <Button
+                android:id="@+id/main_next"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/textView3"/>-->
+                android:layout_weight="1"
+                android:drawableRight="@mipmap/arrow_right"
+                android:text="@string/next"/>
+        </LinearLayout>
 
-        </FrameLayout>
-
-
-
+        <Button
+            android:id="@+id/gd_main_bt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/frmg_dialog"/>
 
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">empty</string>
+    <string name="info">Info:</string>
+    <string name="next">Next</string>
+    <string name="prev">Prev</string>
+    <string name="info_00">Info: array 00</string>
+    <string name="info_01">Info: array 01</string>
+    <string name="info_02">Info: array 02</string>
+    <string name="info_03">Info: array 03</string>
+    <string name="info_04">Info: array 04</string>
+    <string name="info_05">Info: array 05</string>
+    <string name="info_06">Info: array 06</string>
+    <string name="info_07">Info: array 07</string>
+    <string name="frmg_dialog">Fragament Dialog</string>
 </resources>
