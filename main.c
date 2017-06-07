@@ -6,6 +6,12 @@
 #include <malloc.h>
 #include "video_capture.h"
 
+#include <sys/select.h>
+#include <sys/time.h>
+#include <sys/types.h>
+#include <unistd.h>
+#include <sys/select.h>
+
 struct camera *cam;
 pthread_t mythread;
 int isEndEncode = 0;
@@ -66,7 +72,7 @@ int main(int argc, char **argv) {
 		printf("malloc camera failure!\n");
 		exit(1);
 	}
-	cam->device_name = "/dev/video0";
+	cam->device_name = "/dev/video1";
 	cam->buffers = NULL;
 	cam->width = 640;
 	cam->height = 480;

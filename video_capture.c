@@ -22,7 +22,7 @@
 
 typedef unsigned char uint8_t;
 
-static char *dev_name = "/dev/video0";
+static char *dev_name = "/dev/video1";
 
 char h264_file_name[100] ;
 FILE *h264_fp;
@@ -194,8 +194,9 @@ int get_and_save_photo(struct camera *cam) {
 			errno_exit("VIDIOC_DQBUF");
 		}
 	}
-	yuvtorgb0(cam->buffers[buf.index].start , rgb,width,height);
-	savebmp(rgb,bmp_fp, width, height );  
+	//yuvtorgb0(cam->buffers[buf.index].start , rgb,width,height);
+	//savebmp(rgb,bmp_fp, width, height );
+	savebmp(cam->buffers[buf.index].start,bmp_fp, width, height );
 
 	if (-1 == xioctl(cam->fd, VIDIOC_QBUF, &buf))
 		errno_exit("VIDIOC_QBUF");
@@ -398,11 +399,13 @@ void v4l2_getFPS(struct camera *cam){
 	init_file();
 	printf("b4 get time");
 	timeB4 = getCurrentTime();
-	for(int i = 0;i<130;i++){
+	int i=0;
+	while(i<130){
 		fd_set fds;
 		struct timeval tv;
 		int r;
 
+		i++;
 		FD_ZERO(&fds);
 		FD_SET(cam->fd, &fds);
 
