@@ -6,6 +6,7 @@ import android.app.FragmentTransaction;
 import android.app.Fragment;
 import android.app.ListFragment;
 import android.content.Context;
+import android.content.pm.ActivityInfo;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -20,7 +21,8 @@ import android.widget.TextView;
 public class MainActivity extends AppCompatActivity {
     private int mStackLevel=0;
     private int minfocount=0;
-    String TAG = "[JamesL]-Main";
+    private static final String KEY_INDX = "index";
+    private static final String TAG = "[JamesL]-Main";
 
     InfoArray[] mInfoAray = new InfoArray[] {
             new InfoArray(R.string.info_00, true),
@@ -38,9 +40,36 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Log.d(TAG,"onCreate");
+        if(savedInstanceState != null)
+            minfocount = savedInstanceState.getInt(KEY_INDX,0);
 
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Log.d(TAG,"onSa");
+        outState.putInt(KEY_INDX,minfocount);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d(TAG,"onPause");
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.d(TAG,"onStart");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.d(TAG,"onStop");
+    }
 
     @Override
     protected void onResume() {
