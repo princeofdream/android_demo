@@ -23,7 +23,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:drawableLeft="@mipmap/arrow_left"
+            android:drawableLeft="@drawable/arrow_left"
             android:text="@string/prev"
             />
 
@@ -32,7 +32,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:drawableRight="@mipmap/arrow_right"
+            android:drawableRight="@drawable/arrow_right"
             android:text="@string/next"/>
     </LinearLayout>
 

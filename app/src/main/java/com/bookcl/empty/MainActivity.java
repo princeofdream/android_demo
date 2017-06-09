@@ -102,11 +102,15 @@ public class MainActivity extends AppCompatActivity {
 
         if(minfocount == 7 ) {
             m_next_bt.setEnabled(false);
-            m_next_img_bt.setBackgroundResource(R.mipmap.to_right_ng);
+            m_next_img_bt.setBackgroundResource(R.drawable.to_right_ng);
+            m_next_img_bt.setEnabled(false);
+            m_next_img_bt.setSelected(false);
         }
         else if( minfocount > 0) {
             m_prev_bt.setEnabled(true);
-            m_prev_img_bt.setBackgroundResource(R.mipmap.to_left);
+            m_prev_img_bt.setBackgroundResource(R.drawable.to_left_btn_bg);
+            m_prev_img_bt.setEnabled(true);
+            m_prev_img_bt.setSelected(true);
         }
     }
 
@@ -118,11 +122,15 @@ public class MainActivity extends AppCompatActivity {
         }
         if(minfocount == 0) {
             m_prev_bt.setEnabled(false);
-            m_prev_img_bt.setBackgroundResource(R.mipmap.to_left_ng);
+            m_prev_img_bt.setBackgroundResource(R.drawable.to_left_ng);
+            m_prev_img_bt.setEnabled(false);
+            m_prev_img_bt.setSelected(false);
         }
         else if( minfocount< 7) {
             m_next_bt.setEnabled(true);
-            m_next_img_bt.setBackgroundResource(R.mipmap.to_right);
+            m_next_img_bt.setBackgroundResource(R.drawable.to_right_btn_bg);
+            m_next_img_bt.setEnabled(true);
+            m_next_img_bt.setSelected(true);
         }
     }
 
@@ -147,13 +155,17 @@ public class MainActivity extends AppCompatActivity {
 
 
         if(minfocount == 0) {
-            m_prev_img_bt.setBackgroundResource(R.mipmap.to_left_ng);
+            m_prev_img_bt.setBackgroundResource(R.drawable.to_left_ng);
             m_prev_bt.setEnabled(false);
+            m_prev_img_bt.setEnabled(false);
+            m_prev_img_bt.setSelected(false);
         }
 
         if(minfocount == 7 ) {
             m_next_bt.setEnabled(false);
-            m_next_img_bt.setBackgroundResource(R.mipmap.to_right_ng);
+            m_next_img_bt.setBackgroundResource(R.drawable.to_right_ng);
+            m_next_img_bt.setEnabled(false);
+            m_next_img_bt.setSelected(false);
         }
 
         m_prev_bt.setOnClickListener(new View.OnClickListener() {
