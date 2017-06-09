@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 
@@ -40,9 +41,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Log.d(TAG,"onCreate");
+
+        float mAlpha=0.3f;
+
         if(savedInstanceState != null)
             minfocount = savedInstanceState.getInt(KEY_INDX,0);
 
+        ImageView mImgview = (ImageView)findViewById(R.id.img_bg);
+        mImgview.setAlpha(mAlpha);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
     }
 

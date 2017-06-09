@@ -1,48 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:orientation="vertical"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:weightSum="1">
+
+    <TextView
+        android:id="@+id/txinfo"
+        android:layout_gravity="top"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:weightSum="1">
+        android:layout_height="wrap_content"
+        android:text="@string/info"/>
 
-        <TextView
-            android:id="@+id/txinfo"
-            android:layout_gravity="top"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/info"/>
-
-        <LinearLayout
-            android:layout_gravity="center"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/main_prev"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:drawableLeft="@mipmap/arrow_left"
-                android:text="@string/prev"
-                />
-
-            <Button
-                android:id="@+id/main_next"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:drawableRight="@mipmap/arrow_right"
-                android:text="@string/next"/>
-        </LinearLayout>
+    <LinearLayout
+        android:layout_gravity="center_horizontal|center_vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
         <Button
-            android:id="@+id/gd_main_bt"
-            android:layout_gravity="bottom|right"
+            android:id="@+id/main_prev"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/frmg_dialog"/>
+            android:layout_weight="1"
+            android:drawableLeft="@mipmap/arrow_left"
+            android:text="@string/prev"
+            />
+
+        <Button
+            android:id="@+id/main_next"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableRight="@mipmap/arrow_right"
+            android:text="@string/next"/>
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/img_bg"
+        android:layout_gravity="bottom|right"
+        android:background="@drawable/rilakkuma_xmas_new_year"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:id="@+id/gd_main_bt"
+        android:layout_gravity="bottom|right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/frmg_dialog"/>
 
 </FrameLayout>
 
