@@ -24,4 +24,11 @@
         <item name="android:windowIsTranslucent">true</item>
     </style>
 
+    <style name="AppTheme.TransparentBG_Dark">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowBackground">@color/tran_bg_dark</item>
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
+
 </resources>

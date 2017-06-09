@@ -6,7 +6,9 @@ import android.app.FragmentTransaction;
 import android.app.Fragment;
 import android.app.ListFragment;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -24,6 +27,12 @@ public class MainActivity extends AppCompatActivity {
     private int minfocount=0;
     private static final String KEY_INDX = "index";
     private static final String TAG = "[JamesL]-Main";
+
+    Button m_prev_bt;
+    Button m_next_bt;
+
+    ImageButton m_prev_img_bt;
+    ImageButton m_next_img_bt;
 
     InfoArray[] mInfoAray = new InfoArray[] {
             new InfoArray(R.string.info_00, true),
@@ -49,6 +58,13 @@ public class MainActivity extends AppCompatActivity {
 
         ImageView mImgview = (ImageView)findViewById(R.id.img_bg);
         mImgview.setAlpha(mAlpha);
+
+        m_prev_bt = (Button) this.findViewById(R.id.main_prev);
+        m_next_bt = (Button) this.findViewById(R.id.main_next);
+
+        m_prev_img_bt = (ImageButton) this.findViewById(R.id.img_prev_bt);
+        m_next_img_bt = (ImageButton) this.findViewById(R.id.img_next_bt);
+
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
     }
 
@@ -77,64 +93,100 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG,"onStop");
     }
 
+    void do_next_action(){
+        minfocount++;
+        if (minfocount > 7) {
+            minfocount = 7;
+            return;
+        }
+
+        if(minfocount == 7 ) {
+            m_next_bt.setEnabled(false);
+            m_next_img_bt.setBackgroundResource(R.mipmap.to_right_ng);
+        }
+        else if( minfocount > 0) {
+            m_prev_bt.setEnabled(true);
+            m_prev_img_bt.setBackgroundResource(R.mipmap.to_left);
+        }
+    }
+
+    void do_prev_action(){
+        minfocount--;
+        if (minfocount < 0) {
+            minfocount = 0;
+            return;
+        }
+        if(minfocount == 0) {
+            m_prev_bt.setEnabled(false);
+            m_prev_img_bt.setBackgroundResource(R.mipmap.to_left_ng);
+        }
+        else if( minfocount< 7) {
+            m_next_bt.setEnabled(true);
+            m_next_img_bt.setBackgroundResource(R.mipmap.to_right);
+        }
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
         Log.d(TAG,"onResume");
 
-        final Button m_prev_bt = (Button) this.findViewById(R.id.main_prev);
-        final Button m_next_bt = (Button) this.findViewById(R.id.main_next);
-
         final TextView mTxInfo = (TextView) findViewById(R.id.txinfo);
 
-        if(minfocount == 0)
-            m_prev_bt.setEnabled(false);
+
 
         mTxInfo.setText(mInfoAray[minfocount].getInfo());
-
         mTxInfo.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                minfocount++;
-                if(minfocount == 7 )
-                    m_next_bt.setEnabled(false);
-                else if( minfocount > 0)
-                    m_prev_bt.setEnabled(true);
-
-                if (minfocount > 7) {
-                    minfocount = 7;
-                    return;
-                }
-
+                do_next_action();
                 mTxInfo.setText(mInfoAray[minfocount].getInfo());
                 Log.d(TAG,"click text!");
             }
         });
 
+
+        if(minfocount == 0) {
+            m_prev_img_bt.setBackgroundResource(R.mipmap.to_left_ng);
+            m_prev_bt.setEnabled(false);
+        }
+
+        if(minfocount == 7 ) {
+            m_next_bt.setEnabled(false);
+            m_next_img_bt.setBackgroundResource(R.mipmap.to_right_ng);
+        }
+
         m_prev_bt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                minfocount--;
-                if(minfocount == 0)
-                    m_prev_bt.setEnabled(false);
-                else if( minfocount< 7)
-                    m_next_bt.setEnabled(true);
+                do_prev_action();
                 mTxInfo.setText(mInfoAray[minfocount].getInfo());
                 Log.d(TAG,"click prev button!");
             }
         });
 
+        m_prev_img_bt.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                do_prev_action();
+                mTxInfo.setText(mInfoAray[minfocount].getInfo());
+                Log.d(TAG,"click prev button!");
+            }
+        });
 
-        if(minfocount == 7 )
-            m_next_bt.setEnabled(false);
         m_next_bt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                minfocount++;
-                if(minfocount == 7 )
-                    m_next_bt.setEnabled(false);
-                else if( minfocount > 0)
-                    m_prev_bt.setEnabled(true);
+                do_next_action();
+                mTxInfo.setText(mInfoAray[minfocount].getInfo());
+                Log.d(TAG,"click next button!");
+            }
+        });
+
+        m_next_img_bt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                do_next_action();
                 mTxInfo.setText(mInfoAray[minfocount].getInfo());
                 Log.d(TAG,"click next button!");
             }
@@ -147,6 +199,17 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 showDialog();
+            }
+        });
+
+
+        Button mshowtime_bt = (Button) this.findViewById(R.id.showtime_bt);
+        mshowtime_bt.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent mshowtime_int = new Intent(MainActivity.this,ShowtimeActivity.class);
+                startActivity(mshowtime_int);
+                Log.d(TAG,"Click show time button");
             }
         });
 

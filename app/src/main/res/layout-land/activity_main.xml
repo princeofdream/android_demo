@@ -5,43 +5,103 @@
              android:gravity="center"
              android:weightSum="1">
 
-    <TextView
-        android:id="@+id/txinfo"
-        android:layout_gravity="top"
-        android:layout_width="match_parent"
+    <ImageView
+        android:id="@+id/img_bg"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/info"/>
+        android:layout_gravity="bottom|right"
+        android:background="@drawable/rilakkuma_xmas_new_year"/>
 
     <LinearLayout
         android:layout_gravity="center_horizontal|center_vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
-        <Button
-            android:id="@+id/main_prev"
-            android:layout_width="wrap_content"
+        <TextView
+            android:id="@+id/txinfo"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:drawableLeft="@mipmap/arrow_left"
-            android:text="@string/prev"
-            />
+            android:layout_gravity="top"
+            android:text="@string/info"/>
 
-        <Button
-            android:id="@+id/main_next"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:drawableRight="@mipmap/arrow_right"
-            android:text="@string/next"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/main_prev"
+                android:layout_gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawableLeft="@mipmap/arrow_left"
+                android:text="@string/prev"/>
+
+            <Button
+                android:id="@+id/main_next"
+                android:layout_gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawableRight="@mipmap/arrow_right"
+                android:text="@string/next"/>
+
+            <ImageButton
+                android:id="@+id/img_prev_bt"
+                android:layout_gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@mipmap/to_left"/>
+
+            <ImageButton
+                android:id="@+id/img_next_bt"
+                android:layout_gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@mipmap/to_right"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/showtime_bt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/showtime_bt"/>
+
+            <Button
+                android:id="@+id/bt2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Button"/>
+
+            <Button
+                android:id="@+id/bt3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Button"/>
+
+            <Button
+                android:id="@+id/bt4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Button"/>
+        </LinearLayout>
+
     </LinearLayout>
-
-    <ImageView
-        android:id="@+id/img_bg"
-        android:layout_gravity="bottom|right"
-        android:background="@drawable/rilakkuma_xmas_new_year"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
 
     <Button
         android:id="@+id/gd_main_bt"
