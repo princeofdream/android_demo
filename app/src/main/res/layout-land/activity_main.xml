@@ -20,6 +20,8 @@
 
         <TextView
             android:id="@+id/txinfo"
+            android:textColor="@color/tx_color_dark"
+            android:textSize="@dimen/activity_tx_size_24"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="top"

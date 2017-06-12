@@ -5,35 +5,44 @@
              android:gravity="center"
              android:weightSum="1">
 
-    <TextView
-        android:id="@+id/txinfo"
-        android:layout_gravity="center_horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/info"/>
-
     <LinearLayout
-        android:layout_gravity="center_horizontal|center_vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_gravity="center_horizontal|center_vertical"
+        android:orientation="vertical">
 
-        <Button
-            android:id="@+id/main_prev"
-            android:layout_width="wrap_content"
+        <TextView
+            android:id="@+id/txinfo"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:drawableLeft="@drawable/arrow_left"
-            android:text="@string/prev"
-            />
+            android:layout_gravity="center_horizontal"
+            android:text="@string/info"
+            android:textColor="@color/tx_color"
+            android:textSize="@dimen/activity_tx_size_24"/>
 
-        <Button
-            android:id="@+id/main_next"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:drawableRight="@drawable/arrow_right"
-            android:text="@string/next"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/main_prev"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawableLeft="@drawable/arrow_left"
+                android:text="@string/prev"
+                />
+
+            <Button
+                android:id="@+id/main_next"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawableRight="@drawable/arrow_right"
+                android:text="@string/next"/>
+        </LinearLayout>
     </LinearLayout>
 
     <ImageView

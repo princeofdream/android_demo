@@ -27,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
     private int minfocount=0;
     private static final String KEY_INDX = "index";
     private static final String TAG = "[JamesL]-Main";
+    public static final String KEY_SHOWTIME_ACT_EXT = "com.bookcl.empty.info_count";
 
     Button m_prev_bt;
     Button m_next_bt;
@@ -49,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Log.d(TAG,"onCreate");
+        Log.i(TAG,"onCreate");
 
         float mAlpha=0.3f;
 
@@ -71,26 +72,26 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        Log.d(TAG,"onSa");
+        Log.i(TAG,"onSa");
         outState.putInt(KEY_INDX,minfocount);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        Log.d(TAG,"onPause");
+        Log.i(TAG,"onPause");
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        Log.d(TAG,"onStart");
+        Log.i(TAG,"onStart");
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        Log.d(TAG,"onStop");
+        Log.i(TAG,"onStop");
     }
 
     void do_next_action(){
@@ -137,7 +138,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        Log.d(TAG,"onResume");
+        Log.i(TAG,"onResume");
 
         final TextView mTxInfo = (TextView) findViewById(R.id.txinfo);
 
@@ -149,7 +150,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 do_next_action();
                 mTxInfo.setText(mInfoAray[minfocount].getInfo());
-                Log.d(TAG,"click text!");
+                Log.i(TAG,"click text!");
             }
         });
 
@@ -173,7 +174,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 do_prev_action();
                 mTxInfo.setText(mInfoAray[minfocount].getInfo());
-                Log.d(TAG,"click prev button!");
+                Log.i(TAG,"click prev button!");
             }
         });
 
@@ -182,7 +183,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 do_prev_action();
                 mTxInfo.setText(mInfoAray[minfocount].getInfo());
-                Log.d(TAG,"click prev button!");
+                Log.i(TAG,"click prev button!");
             }
         });
 
@@ -191,7 +192,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 do_next_action();
                 mTxInfo.setText(mInfoAray[minfocount].getInfo());
-                Log.d(TAG,"click next button!");
+                Log.i(TAG,"click next button!");
             }
         });
 
@@ -200,7 +201,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 do_next_action();
                 mTxInfo.setText(mInfoAray[minfocount].getInfo());
-                Log.d(TAG,"click next button!");
+                Log.i(TAG,"click next button!");
             }
         });
 
@@ -219,13 +220,13 @@ public class MainActivity extends AppCompatActivity {
         mshowtime_bt.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                Intent mshowtime_int = new Intent(MainActivity.this,ShowtimeActivity.class);
+                //Intent mshowtime_int = new Intent(MainActivity.this,ShowtimeActivity.class);
+                //mshowtime_int.putExtra(KEY_SHOWTIME_ACT_EXT,minfocount);
+                Intent mshowtime_int = ShowtimeActivity.newIntent(MainActivity.this,minfocount);
                 startActivity(mshowtime_int);
-                Log.d(TAG,"Click show time button");
+                Log.i(TAG,"Click show time button");
             }
         });
-
-
     }
 
 
