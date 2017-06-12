@@ -27,7 +27,9 @@ public class MainActivity extends AppCompatActivity {
     private int minfocount=0;
     private static final String KEY_INDX = "index";
     private static final String TAG = "[JamesL]-Main";
+    private static final int REQUEST_CODE_INFO = 20;
     public static final String KEY_SHOWTIME_ACT_EXT = "com.bookcl.empty.info_count";
+    public static final String KEY_SHOWTIME_ACT_EXT_SHOW = "com.bookcl.empty.info_show";
 
     Button m_prev_bt;
     Button m_next_bt;
@@ -72,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        Log.i(TAG,"onSa");
+        Log.i(TAG,"onSaveInstanceState");
         outState.putInt(KEY_INDX,minfocount);
     }
 
@@ -223,7 +225,8 @@ public class MainActivity extends AppCompatActivity {
                 //Intent mshowtime_int = new Intent(MainActivity.this,ShowtimeActivity.class);
                 //mshowtime_int.putExtra(KEY_SHOWTIME_ACT_EXT,minfocount);
                 Intent mshowtime_int = ShowtimeActivity.newIntent(MainActivity.this,minfocount);
-                startActivity(mshowtime_int);
+                //startActivity(mshowtime_int);
+                startActivityForResult(mshowtime_int,REQUEST_CODE_INFO);
                 Log.i(TAG,"Click show time button");
             }
         });
@@ -243,6 +246,22 @@ public class MainActivity extends AppCompatActivity {
         newFragment.show(ft, "f_layout");
     }
 
+    private int getRetFromIntent(Intent ret) {
+        return ret.getIntExtra(KEY_SHOWTIME_ACT_EXT_SHOW,0);
+    }
 
-
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.i(TAG,"onActivityResult");
+        Log.i(TAG,"Result code: " + requestCode);
+        if(requestCode == REQUEST_CODE_INFO) {
+            if(data != null) {
+                int ret = getRetFromIntent(data);
+                Log.i(TAG,"Get Result: " + ret);
+            }
+            else
+                Log.i(TAG,"result data is null!");
+        }
+    }
 }
