@@ -27,7 +27,8 @@ public class MainActivity extends AppCompatActivity {
     private int minfocount=0;
     private static final String KEY_INDX = "index";
     private static final String TAG = "[JamesL]-Main";
-    private static final int REQUEST_CODE_INFO = 20;
+    private static final int REQUEST_CODE_INFO = (1024+0);
+    private static final int REQUEST_CODE_NEWS = (1024+1);
     public static final String KEY_SHOWTIME_ACT_EXT = "com.bookcl.empty.info_count";
     public static final String KEY_SHOWTIME_ACT_EXT_SHOW = "com.bookcl.empty.info_show";
 
@@ -238,6 +239,19 @@ public class MainActivity extends AppCompatActivity {
                 Log.i(TAG,"Click show time button");
             }
         });
+
+
+        Button mNewsbtn = (Button) this.findViewById(R.id.news_btn);
+        mNewsbtn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent mNews_int = NewsActivity.newIntent(MainActivity.this,minfocount);
+                startActivityForResult(mNews_int,REQUEST_CODE_NEWS);
+                Log.i(TAG,"Click News button");
+            }
+        });
+
+
     }
 
 

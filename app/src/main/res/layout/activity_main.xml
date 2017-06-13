@@ -81,11 +81,11 @@
                 android:text="@string/showtime_bt"/>
 
             <Button
-                android:id="@+id/bt2"
+                android:id="@+id/news_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Button"/>
+                android:text="@string/news_act"/>
 
             <Button
                 android:id="@+id/bt3"

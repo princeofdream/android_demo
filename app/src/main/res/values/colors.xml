@@ -6,6 +6,8 @@
 
     <color name="tran_bg">#DDFFFFFF</color>
     <color name="tran_bg_dark">#DD000000</color>
+    <color name="normal_bg">#FFFFFFFF</color>
+    <color name="normal_bg_dark">#FF000000</color>
 
     <color name="tx_color">#FFFFFF</color>
     <color name="tx_color_dark">#000000</color>

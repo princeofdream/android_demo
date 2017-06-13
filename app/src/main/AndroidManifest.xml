@@ -7,6 +7,7 @@
         android:icon="@drawable/book"
         android:label="@string/app_name"
         android:screenOrientation="fullSensor"
+        android:theme="@style/AppTheme.NormalBG"
         android:supportsRtl="true">
         <activity
             android:name=".MainActivity"
@@ -17,13 +18,15 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".ShowtimeActivity"
+        <activity
+            android:name=".ShowtimeActivity"
             android:theme="@style/AppTheme.TransparentBG_Dark">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
-
-                <!--<category android:name="android.intent.category.LAUNCHER"/>-->
+                <!-- <category android:name="android.intent.category.LAUNCHER"/> -->
             </intent-filter>
+        </activity>
+        <activity android:name=".NewsActivity">
         </activity>
     </application>
 
