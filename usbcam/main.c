@@ -12,7 +12,7 @@
 #include <unistd.h>
 #include <sys/select.h>
 
-struct camera *cam;
+struct camera *cam,*cam1;
 pthread_t mythread;
 int isEndEncode = 0;
 int isWaitEncode = 0;
@@ -31,19 +31,19 @@ void capture_encode_thread(void) {
 		if (isWaitEncode) {//short time wait !!
 			continue;
 		}
-		cam->frame_number = count;
+		cam1->frame_number = count;
 		fd_set fds;
 		struct timeval tv;
 		int r;
 
 		FD_ZERO(&fds);
-		FD_SET(cam->fd, &fds);
+		FD_SET(cam1->fd, &fds);
 
 		/* Timeout. */
 		tv.tv_sec = 2;
 		tv.tv_usec = 0;
 
-		r = select(cam->fd + 1, &fds, NULL, NULL, &tv);
+		r = select(cam1->fd + 1, &fds, NULL, NULL, &tv);
 
 		if (-1 == r) {
 			if (EINTR == errno)
@@ -57,7 +57,7 @@ void capture_encode_thread(void) {
 			exit(EXIT_FAILURE);
 		}
 
-		if (read_and_encode_frame(cam) != 1) {
+		if (read_and_encode_frame(cam1) != 1) {
 			fprintf(stderr, "read_fram fail in thread\n");
 			break;
 		}
@@ -72,12 +72,24 @@ int main(int argc, char **argv) {
 		printf("malloc camera failure!\n");
 		exit(1);
 	}
-	cam->device_name = "/dev/video1";
+	cam->device_name = "/dev/video0";
 	cam->buffers = NULL;
 	cam->width = 640;
 	cam->height = 480;
 	cam->frame_rate = 25;
 	cam->display_depth = 5; /* RGB24 */
+
+	cam1 = (struct camera *) malloc(sizeof(struct camera));
+	if (!cam1) {
+		printf("malloc camera1 failure!\n");
+		exit(1);
+	}
+	cam1->device_name = "/dev/video1";
+	cam1->buffers = NULL;
+	cam1->width = 640;
+	cam1->height = 480;
+	cam1->frame_rate = 25;
+	cam1->display_depth = 5; /* RGB24 */
 	
     while(1){
 		printf("0.End 1:testFPS 2:startRecord 3.stopRecord 4.switchFile 5.takePicture \n Enter a number: ");
@@ -85,12 +97,12 @@ int main(int argc, char **argv) {
 		//printf("selected num:%d \n",num);
 		switch(num){
 			case 1:{//testFPS
-				v4l2_getFPS(cam);
+				v4l2_getFPS(cam1);
 				break;
 			}
 			case 2:{//startRecord
 				isEndEncode = 0;
-				v4l2_init(cam);
+				v4l2_init(cam1);
 				if (0 != pthread_create(&mythread, NULL, (void *) capture_encode_thread, NULL)) {
 					fprintf(stderr, "thread create fail\n");
 				}
@@ -98,7 +110,8 @@ int main(int argc, char **argv) {
 			}
 			case 3:{//stopRecord
 				isEndEncode = 1;
-				v4l2_close(cam);
+				sleep(1);
+				v4l2_close(cam1);
 				break;
 			}
 			case 4:{//switchFile
@@ -113,9 +126,12 @@ int main(int argc, char **argv) {
 				break;
 			}
 			default:{
-				isEndEncode = 0;
+				isEndEncode = 1;
+				sleep(1);
 				v4l2_close(cam);
+				v4l2_close(cam1);
 				free(cam);
+				free(cam1);
 				isEndMain = 1;
 				break;
 			}

@@ -22,8 +22,6 @@
 
 typedef unsigned char uint8_t;
 
-static char *dev_name = "/dev/video1";
-
 char h264_file_name[100] ;
 FILE *h264_fp;
 FILE *bmp_fp;
@@ -87,7 +85,7 @@ char* get_h264_file_name(int isphoto){
 	struct tm * timeinfo;
 	time ( &rawtime );
 	timeinfo = localtime ( &rawtime );
-	if(isphoto) strftime(h264_file_name,100,"./photo/%Y_%m_%d-%I_%M_%S.bmp",timeinfo);
+	if(isphoto) strftime(h264_file_name,100,"./photo/%Y_%m_%d-%I_%M_%S.jpeg",timeinfo);
 	else strftime(h264_file_name,100,"./video/%Y_%m_%d-%I_%M_%S.h264",timeinfo);
 	printf("new file name :%s \n",h264_file_name);
 	return h264_file_name;
@@ -160,7 +158,8 @@ int read_and_encode_frame(struct camera *cam) {
 			errno_exit("VIDIOC_DQBUF");
 		}
 	}
-	encode_frame(cam->buffers[buf.index].start, buf.length);
+	fwrite(cam->buffers[buf.index].start, buf.length, 1, h264_fp);
+	//encode_frame(cam->buffers[buf.index].start, buf.length);
 
 	if (-1 == xioctl(cam->fd, VIDIOC_QBUF, &buf))
 		errno_exit("VIDIOC_QBUF");
@@ -196,7 +195,7 @@ int get_and_save_photo(struct camera *cam) {
 	}
 	//yuvtorgb0(cam->buffers[buf.index].start , rgb,width,height);
 	//savebmp(rgb,bmp_fp, width, height );
-	savebmp(cam->buffers[buf.index].start,bmp_fp, width, height );
+	 fwrite(cam->buffers[buf.index].start,buf.length,1,bmp_fp);
 
 	if (-1 == xioctl(cam->fd, VIDIOC_QBUF, &buf))
 		errno_exit("VIDIOC_QBUF");
@@ -365,8 +364,9 @@ void init_camera(struct camera *cam) {
 	fmt->type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
 	fmt->fmt.pix.width = cam->width;
 	fmt->fmt.pix.height = cam->height;
-	fmt->fmt.pix.pixelformat = V4L2_PIX_FMT_YUYV; //yuv422
-	//  fmt->fmt.pix.pixelformat = V4L2_PIX_FMT_YUV420  //yuv420 但是我电脑不支持
+	//fmt->fmt.pix.pixelformat = V4L2_PIX_FMT_YUYV; //yuv422
+	fmt->fmt.pix.pixelformat = V4L2_PIX_FMT_MJPEG; //
+	//  fmt->fmt.pix.pixelformat = V4L2_PIX_FMT_YUV420;  //yuv420 但是我电脑不支持
 	fmt->fmt.pix.field = V4L2_FIELD_INTERLACED; //隔行扫描
 
 	if (-1 == xioctl(cam->fd, VIDIOC_S_FMT, fmt))
