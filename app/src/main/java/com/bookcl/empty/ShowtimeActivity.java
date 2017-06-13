@@ -1,12 +1,16 @@
 package com.bookcl.empty;
 
+import android.animation.Animator;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewAnimationUtils;
+import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,12 +39,43 @@ public class ShowtimeActivity extends AppCompatActivity {
         Toast.makeText(ShowtimeActivity.this,"Get info Count: " + get_info_count,Toast.LENGTH_LONG).show();
         //setResult(Activity.RESULT_FIRST_USER);
 
-        Button mPrev = (Button) findViewById(R.id.show_prev);
+        final Button mPrev = (Button) findViewById(R.id.show_prev);
         mPrev.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                 Log.i(TAG,"Click show prev button!");
                 setShowtimeResult(100);
+
+                int cx = mPrev.getWidth()/2;
+                int cy = mPrev.getHeight()/2;
+                float radius = mPrev.getWidth();
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    Animator anim = ViewAnimationUtils.createCircularReveal(mPrev, cx, cy, radius, 0);
+                    anim.addListener(new Animator.AnimatorListener() {
+                        @Override
+                        public void onAnimationStart(Animator animation) {
+
+                        }
+
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            mPrev.setVisibility(View.INVISIBLE);
+                        }
+
+                        @Override
+                        public void onAnimationCancel(Animator animation) {
+
+                        }
+
+                        @Override
+                        public void onAnimationRepeat(Animator animation) {
+
+                        }
+                    });
+                    anim.start();
+                }
+                else
+                    mPrev.setVisibility(View.INVISIBLE);
             }
         });
 
@@ -50,6 +85,7 @@ public class ShowtimeActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Log.i(TAG,"Click show next button!");
                 setShowtimeResult(101);
+                mPrev.setVisibility(View.VISIBLE);
             }
         });
 
