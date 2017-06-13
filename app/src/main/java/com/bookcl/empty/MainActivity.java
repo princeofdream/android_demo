@@ -48,6 +48,13 @@ public class MainActivity extends AppCompatActivity {
             new InfoArray(R.string.info_07, true)
     };
 
+    // Used to load the 'native-lib' library on application startup.
+    static {
+        System.loadLibrary("xyz");
+    }
+
+    public native String stringFromJNI();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -146,7 +153,8 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        mTxInfo.setText(mInfoAray[minfocount].getInfo());
+        //mTxInfo.setText(mInfoAray[minfocount].getInfo());
+        mTxInfo.setText(stringFromJNI());
         mTxInfo.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
