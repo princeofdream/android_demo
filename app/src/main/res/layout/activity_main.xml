@@ -12,6 +12,15 @@
         android:layout_gravity="bottom|right"
         android:background="@drawable/rilakkuma_xmas_new_year"/>
 
+    <TextView
+        android:id="@+id/appinfo"
+        android:textColor="@color/tx_color_dark"
+        android:textSize="@dimen/activity_tx_size_24"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:text="@string/info"/>
+
     <LinearLayout
         android:layout_gravity="center_horizontal|center_vertical"
         android:layout_width="wrap_content"

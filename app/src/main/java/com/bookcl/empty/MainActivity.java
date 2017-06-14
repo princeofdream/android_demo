@@ -49,12 +49,14 @@ public class MainActivity extends AppCompatActivity {
             new InfoArray(R.string.info_07, true)
     };
 
-    // Used to load the 'native-lib' library on application startup.
+    // Used to load the 'abc' and 'xyz' library on application startup.
     static {
+        System.loadLibrary("abc");
         System.loadLibrary("xyz");
     }
 
     public native String stringFromJNI();
+    public native String stringFromCPP();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -150,12 +152,12 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         Log.i(TAG,"onResume");
 
+        final TextView mAppInfo = (TextView) findViewById(R.id.appinfo);
         final TextView mTxInfo = (TextView) findViewById(R.id.txinfo);
 
+        mAppInfo.setText(stringFromJNI() + "\n" + stringFromCPP());
 
-
-        //mTxInfo.setText(mInfoAray[minfocount].getInfo());
-        mTxInfo.setText(stringFromJNI());
+        mTxInfo.setText(mInfoAray[minfocount].getInfo());
         mTxInfo.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
