@@ -4,7 +4,8 @@
 #include <stdint.h>
 #include <stdio.h>
 //#include "../local/include/x264.h"
-#include "../x264/x264.h"
+// #include "include/x264.h"
+#include <x264.h>
 
 typedef unsigned char uint8_t;
 
