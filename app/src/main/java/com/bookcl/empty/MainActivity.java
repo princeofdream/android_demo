@@ -21,6 +21,10 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.tencent.bugly.crashreport.CrashReport;
+
+import java.io.UnsupportedEncodingException;
+
 
 public class MainActivity extends AppCompatActivity {
     private int mStackLevel=0;
@@ -79,6 +83,17 @@ public class MainActivity extends AppCompatActivity {
         m_next_img_bt = (ImageButton) this.findViewById(R.id.img_next_bt);
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
+
+        /*
+        第三个参数为SDK调试模式开关，调试模式的行为特性如下：
+        输出详细的Bugly SDK的Log
+        每一条Crash都会被立即上报
+        自定义日志将会在Logcat中输出
+        建议在测试阶段建议设置成true，发布时设置为false。
+        */
+        //CrashReport.initCrashReport(getApplicationContext(), "ca6c90db3b", true);
+        CrashReport.initCrashReport(getApplicationContext());
+
     }
 
     @Override
