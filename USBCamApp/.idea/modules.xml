@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/USBCam.iml" filepath="$PROJECT_DIR$/USBCam.iml" />
+      <module fileurl="file://$PROJECT_DIR$/USBCamApp.iml" filepath="$PROJECT_DIR$/USBCamApp.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
