@@ -9,3 +9,17 @@ JNIEXPORT jstring JNICALL Java_com_hgsoft_usbcam_MainActivity_stringFromJNI
     return (*env)->NewStringUTF(env,get_str);
 //    return (*env)->NewStringUTF(env,"[Native-C] By JamesL");
 }
+
+
+JNIEXPORT jstring JNICALL Java_com_hgsoft_usbcam_MainActivity_usbcam_Capture
+        (JNIEnv *env, jobject obj){
+    char* get_str = test_char();
+    return (*env)->NewStringUTF(env,get_str);
+}
+
+
+JNIEXPORT jstring JNICALL Java_com_hgsoft_usbcam_MainActivity_usbcam_Record
+        (JNIEnv *env, jobject obj){
+    char* get_str = test_char();
+    return (*env)->NewStringUTF(env,get_str);
+}
