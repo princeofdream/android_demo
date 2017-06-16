@@ -23,7 +23,11 @@ import android.widget.TextView;
 
 import com.tencent.bugly.crashreport.CrashReport;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -170,7 +174,7 @@ public class MainActivity extends AppCompatActivity {
         final TextView mAppInfo = (TextView) findViewById(R.id.appinfo);
         final TextView mTxInfo = (TextView) findViewById(R.id.txinfo);
 
-        mAppInfo.setText(stringFromJNI() + "\n" + stringFromCPP());
+        mAppInfo.setText(getDate() + "\n"+ stringFromJNI() + "\n" + stringFromCPP());
 
         mTxInfo.setText(mInfoAray[minfocount].getInfo());
         mTxInfo.setOnClickListener(new View.OnClickListener(){
@@ -302,5 +306,34 @@ public class MainActivity extends AppCompatActivity {
             else
                 Log.i(TAG,"result data is null!");
         }
+    }
+
+    public String getDate(){
+        String temp_str="";
+        Date dt = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_HHmmss");
+        temp_str=sdf.format(dt);
+        Log.i(TAG,"time is:" + temp_str);
+        return temp_str;
+    }
+
+    public int WriteInfo(String path,String data){
+        FileWriter fw;
+        String getdata;
+        if(data == null) {
+            getdata = "This is a test by JamesL\n";
+        }
+        else {
+            getdata = data;
+        }
+
+        try {
+            fw = new FileWriter(path);
+            fw.write(getdata);
+            fw.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 }
