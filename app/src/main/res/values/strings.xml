@@ -15,4 +15,5 @@
     <string name="showtime_bt">ShowTime</string>
     <string name="news_btn">News</string>
     <string name="news_act">News</string>
+    <string name="news_title_hint">News Title</string>
 </resources>
