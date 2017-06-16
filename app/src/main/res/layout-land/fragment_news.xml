@@ -30,17 +30,26 @@
             android:layout_height="wrap_content"
             android:text="@string/news_detail_label"/>
 
-        <Button
-            android:id="@+id/news_info_btn"
-            android:text="@string/news_btn_info"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
 
-        <CheckBox
-            android:id="@+id/news_checkbox_stat"
-            android:text="@string/news_checkbox_stat"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            <Button
+                android:id="@+id/news_info_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="@string/news_btn_info"/>
+
+            <CheckBox
+                android:id="@+id/news_checkbox_stat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/news_checkbox_stat"/>
+
+        </LinearLayout>
 
     </LinearLayout>
 

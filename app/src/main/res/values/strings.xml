@@ -16,4 +16,9 @@
     <string name="news_btn">News</string>
     <string name="news_act">News</string>
     <string name="news_title_hint">News Title</string>
+    <string name="news_title_label">Title</string>
+    <string name="news_detail_label">Detail</string>
+    <string name="news_read_stat">Read</string>
+    <string name="news_btn_info">Info</string>
+    <string name="news_checkbox_stat">isRead</string>
 </resources>

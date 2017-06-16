@@ -10,6 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 
 
@@ -37,6 +39,8 @@ public class NewsFragment extends Fragment {
 
     private NewsInfo mNewsInfo;
     private EditText mTitleField;
+    private Button mDateButton;
+    private CheckBox mReadCheckbox;
 
     public NewsFragment() {
         // Required empty public constructor
@@ -91,6 +95,18 @@ public class NewsFragment extends Fragment {
             @Override
             public void afterTextChanged(Editable s) {
 
+            }
+        });
+
+        mDateButton = (Button)frag_view.findViewById(R.id.news_info_btn);
+        mDateButton.setText(mNewsInfo.getDate().toString());
+        mDateButton.setEnabled(false);
+
+        mReadCheckbox = (CheckBox) frag_view.findViewById(R.id.news_checkbox_stat);
+        mReadCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                mNewsInfo.setRead(isChecked);
             }
         });
 
