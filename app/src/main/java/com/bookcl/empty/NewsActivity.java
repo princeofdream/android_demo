@@ -26,7 +26,7 @@ public class NewsActivity extends FragmentActivity {
         Fragment mFragment = fm.findFragmentById(R.id.fragment_container);
 
         if(mFragment == null){
-            mFragment = new NewsFragment();
+            mFragment = new NewsInfoFragment();
             fm.beginTransaction()
                     .add(R.id.fragment_container,mFragment)
                     .commit();
