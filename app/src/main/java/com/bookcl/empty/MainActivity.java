@@ -37,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "[JamesL]-Main";
     private static final int REQUEST_CODE_INFO = (1024+0);
     private static final int REQUEST_CODE_NEWS = (1024+1);
+    private static final int REQUEST_CODE_NEWS_INFO = (1024+2);
     public static final String KEY_SHOWTIME_ACT_EXT = "com.bookcl.empty.info_count";
     public static final String KEY_SHOWTIME_ACT_EXT_SHOW = "com.bookcl.empty.info_show";
 
@@ -269,6 +270,16 @@ public class MainActivity extends AppCompatActivity {
                 Intent mNews_int = NewsActivity.newIntent(MainActivity.this,minfocount);
                 startActivityForResult(mNews_int,REQUEST_CODE_NEWS);
                 Log.i(TAG,"Click News button");
+            }
+        });
+
+        Button mNewsInfobtn = (Button) this.findViewById(R.id.newsinfo_btn);
+        mNewsInfobtn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent mNewsInfo_int = NewsInfoActivity.newIntent(MainActivity.this,minfocount);
+                startActivityForResult(mNewsInfo_int,REQUEST_CODE_NEWS);
+                Log.i(TAG,"Click NewsInfo button");
             }
         });
 
