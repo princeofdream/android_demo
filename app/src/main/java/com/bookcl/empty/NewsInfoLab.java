@@ -14,14 +14,14 @@ import java.util.UUID;
  */
 
 public class NewsInfoLab {
-    private NewsInfoLab sNewsInfoLab;
+    private static NewsInfoLab sNewsInfoLab;
 
     private static final String TAG = "[JamesL]-NewsInfoLab";
 
     private List<NewsInfo> mNewsInfo;
     private static final int NEW_EVENT = 100;
 
-    public NewsInfoLab get(Context mContext) {
+    public static NewsInfoLab get(Context mContext) {
         if(sNewsInfoLab == null) {
             sNewsInfoLab = new NewsInfoLab(mContext);
         }

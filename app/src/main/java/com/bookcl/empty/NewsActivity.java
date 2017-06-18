@@ -10,7 +10,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.bookcl.empty.dummy.DummyContent;
 
 public class NewsActivity extends FragmentActivity
 implements NewsFragment.OnFragmentInteractionListener {

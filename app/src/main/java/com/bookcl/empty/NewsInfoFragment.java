@@ -10,9 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.bookcl.empty.dummy.DummyContent;
-import com.bookcl.empty.dummy.DummyContent.DummyItem;
-
 import java.util.List;
 
 /**
@@ -23,8 +20,9 @@ import java.util.List;
  */
 public class NewsInfoFragment extends Fragment {
 
-    // TODO: Customize parameter argument names
-    private static final String ARG_COLUMN_COUNT = "column-count";
+    private static final String TAG="[JamesL]-NewsInfoFrag";
+
+    private static final String ARG_COLUMN_COUNT = "newsinfo-column";
     // TODO: Customize parameters
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
@@ -69,11 +67,16 @@ public class NewsInfoFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new NewsInfoRecyclerViewAdapter(DummyContent.ITEMS, mListener));
+            // recyclerView.setAdapter(new NewsInfoRecyclerViewAdapter(DummyContent.ITEMS, mListener));
+
+            NewsInfoLab mNewsInfoLab = NewsInfoLab.get(getActivity());
+            List<NewsInfo> getNewsInfo = mNewsInfoLab.getallNewsInfo();
+
+            recyclerView.setAdapter(new NewsInfoRecyclerViewAdapter(getNewsInfo, mListener));
+
         }
         return view;
     }
-
 
     @Override
     public void onAttach(Context context) {
@@ -104,6 +107,6 @@ public class NewsInfoFragment extends Fragment {
      */
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onListFragmentInteraction(DummyItem item);
+        void onListFragmentInteraction(NewsInfo item);
     }
 }
