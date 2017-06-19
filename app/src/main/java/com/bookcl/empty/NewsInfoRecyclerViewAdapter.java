@@ -21,12 +21,16 @@ public class NewsInfoRecyclerViewAdapter extends RecyclerView.Adapter<NewsInfoRe
 
     private final List<NewsInfo> mValues;
     private final OnListFragmentInteractionListener mListener;
+    private int mAction;
 
     private static final String TAG = "[JamesL]-NsInRcyAdp";
 
-    public NewsInfoRecyclerViewAdapter(List<NewsInfo> items, OnListFragmentInteractionListener listener) {
+    public NewsInfoRecyclerViewAdapter(List<NewsInfo> items, OnListFragmentInteractionListener listener, int action) {
         mValues = items;
         mListener = listener;
+        mAction = action;
+
+        Log.i(TAG,"Start RecyclerView in action " + mAction);
     }
 
     @Override
@@ -37,11 +41,17 @@ public class NewsInfoRecyclerViewAdapter extends RecyclerView.Adapter<NewsInfoRe
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         holder.mItem = mValues.get(position);
         holder.mReadStat.setChecked(mValues.get(position).isRead());
         holder.mContentView.setText(mValues.get(position).getTitle());
         holder.mBtn.setText("Btn " + position);
+        holder.mBtn.setVisibility(View.INVISIBLE);
+        //holder.mReadStat.setVisibility(View.INVISIBLE);
+        if(mAction < 1)
+            holder.mReadStat.setVisibility(View.INVISIBLE);
+        else
+            holder.mReadStat.setVisibility(View.VISIBLE);
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,6 +61,15 @@ public class NewsInfoRecyclerViewAdapter extends RecyclerView.Adapter<NewsInfoRe
                     // fragment is attached to one) that an item has been selected.
                     mListener.onListFragmentInteraction(holder.mItem);
                 }
+            }
+        });
+
+        holder.mView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                mAction++;
+                mListener.LongPressAction(holder.mItem, mAction);
+                return false;
             }
         });
 

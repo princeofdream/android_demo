@@ -15,8 +15,32 @@ public class NewsInfoActivity extends FragmentActivity
     public static final String KEY_NEWSINFO_ACT_EXT = "com.bookcl.empty.newsinfo";
     private static int get_newsinfo_data = 0;
 
+    FragmentManager fm = getSupportFragmentManager();
+    Fragment mFragment = fm.findFragmentById(R.id.fragment_container);
+
     public void onListFragmentInteraction(NewsInfo item) {
         Log.i(TAG,"James test communication!");
+    }
+
+    public void LongPressAction(NewsInfo info, int index) {
+        Log.i(TAG,"James test long press. " + index);
+        if(mFragment == null){
+            //mFragment = new NewsFragment();
+            //mFragment = new NewsInfoFragment();
+            mFragment = NewsInfoFragment.newInstance(1,index);
+            fm.beginTransaction()
+                    .add(R.id.fragment_container,mFragment)
+                    .commit();
+        }
+        else
+        {
+            fm.beginTransaction().remove(mFragment);
+            mFragment = null;
+            mFragment = NewsInfoFragment.newInstance(1,index);
+            fm.beginTransaction()
+                    .add(R.id.fragment_container,mFragment)
+                    .commit();
+        }
     }
 
     @Override
@@ -26,13 +50,10 @@ public class NewsInfoActivity extends FragmentActivity
         get_newsinfo_data = getIntent().getIntExtra(KEY_NEWSINFO_ACT_EXT, 0);
         setContentView(R.layout.activity_newsinfo);
 
-        FragmentManager fm = getSupportFragmentManager();
-        Fragment mFragment = fm.findFragmentById(R.id.fragment_container);
-
         if(mFragment == null){
             //mFragment = new NewsFragment();
             //mFragment = new NewsInfoFragment();
-            mFragment = NewsInfoFragment.newInstance(1);
+            mFragment = NewsInfoFragment.newInstance(1,0);
             fm.beginTransaction()
                     .add(R.id.fragment_container,mFragment)
                     .commit();

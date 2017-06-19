@@ -23,8 +23,10 @@ public class NewsInfoFragment extends Fragment {
     private static final String TAG="[JamesL]-NewsInfoFrag";
 
     private static final String ARG_COLUMN_COUNT = "newsinfo-column";
+    private static final String ARG_ACTION = "newsinfo-action";
     // TODO: Customize parameters
     private int mColumnCount = 1;
+    private int mAction = 0;
     private OnListFragmentInteractionListener mListener;
 
     /**
@@ -34,12 +36,12 @@ public class NewsInfoFragment extends Fragment {
     public NewsInfoFragment() {
     }
 
-    // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
-    public static NewsInfoFragment newInstance(int columnCount) {
+    public static NewsInfoFragment newInstance(int columnCount,int action) {
         NewsInfoFragment fragment = new NewsInfoFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_COLUMN_COUNT, columnCount);
+        args.putInt(ARG_ACTION, action);
         fragment.setArguments(args);
         return fragment;
     }
@@ -50,6 +52,7 @@ public class NewsInfoFragment extends Fragment {
 
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
+            mAction = getArguments().getInt(ARG_ACTION);
         }
     }
 
@@ -72,7 +75,7 @@ public class NewsInfoFragment extends Fragment {
             NewsInfoLab mNewsInfoLab = NewsInfoLab.get(getActivity());
             List<NewsInfo> getNewsInfo = mNewsInfoLab.getallNewsInfo();
 
-            recyclerView.setAdapter(new NewsInfoRecyclerViewAdapter(getNewsInfo, mListener));
+            recyclerView.setAdapter(new NewsInfoRecyclerViewAdapter(getNewsInfo, mListener,mAction));
 
         }
         return view;
@@ -106,7 +109,7 @@ public class NewsInfoFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnListFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onListFragmentInteraction(NewsInfo item);
+        void LongPressAction(NewsInfo info, int index);
     }
 }
