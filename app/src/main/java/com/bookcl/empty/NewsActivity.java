@@ -10,6 +10,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
+import java.util.UUID;
+
 
 public class NewsActivity extends FragmentActivity
 implements NewsFragment.OnFragmentInteractionListener {
@@ -35,9 +37,10 @@ implements NewsFragment.OnFragmentInteractionListener {
         Fragment mFragment = fm.findFragmentById(R.id.fragment_container);
 
         if(mFragment == null){
-            mFragment = new NewsFragment(mNewsInfo);
-            //mFragment = new NewsInfoFragment();
-            //mFragment = NewsInfoFragment.newInstance(1);
+            if(mNewsInfo != null)
+                mFragment = NewsFragment.newInstance(mNewsInfo.getId());
+            else
+                mFragment = NewsFragment.newInstance(null);
             fm.beginTransaction()
                     .add(R.id.fragment_container,mFragment)
                     .commit();
@@ -47,9 +50,7 @@ implements NewsFragment.OnFragmentInteractionListener {
     public static Intent newIntent(Context packageContext, int mcount, NewsInfo newsinfo) {
         Intent mNews_int = new Intent(packageContext,NewsActivity.class);
         mNews_int.putExtra(KEY_NEWS_ACT_EXT,mcount);
-        if(newsinfo != null){
-            mNewsInfo = newsinfo;
-        }
+        mNewsInfo = newsinfo;
         Log.i(TAG,"newIntent");
         return mNews_int;
     }

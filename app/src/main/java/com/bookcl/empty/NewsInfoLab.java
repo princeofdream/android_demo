@@ -18,12 +18,15 @@ public class NewsInfoLab {
 
     private static final String TAG = "[JamesL]-NewsInfoLab";
 
-    private List<NewsInfo> mNewsInfo;
+    private static List<NewsInfo> mNewsInfo;
     private static final int NEW_EVENT = 100;
 
     public static NewsInfoLab get(Context mContext) {
         if(sNewsInfoLab == null) {
+            Log.i(TAG,"Static NewsInfoLab is NULL!!");
             sNewsInfoLab = new NewsInfoLab(mContext);
+        } else {
+            Log.i(TAG,"get NewsInoLab!");
         }
         return sNewsInfoLab;
     }
@@ -46,7 +49,7 @@ public class NewsInfoLab {
         return mNewsInfo;
     }
 
-    public NewsInfo getNewsInfo(UUID mId) {
+    public static NewsInfo getNewsInfo(UUID mId) {
         for (NewsInfo gNewsInfo : mNewsInfo) {
             if (gNewsInfo.getId().equals(mId)) {
                 return gNewsInfo;

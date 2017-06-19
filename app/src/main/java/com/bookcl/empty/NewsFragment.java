@@ -16,6 +16,7 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 
 import java.util.Random;
+import java.util.UUID;
 
 
 /**
@@ -27,14 +28,10 @@ import java.util.Random;
  * create an instance of this fragment.
  */
 public class NewsFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String ARG_UUID = "newsinfo-uuid";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private UUID muuid;
 
     private OnFragmentInteractionListener mListener;
 
@@ -45,26 +42,23 @@ public class NewsFragment extends Fragment {
     private Button mDateButton;
     private CheckBox mReadCheckbox;
 
-    public NewsFragment(NewsInfo newsinfo) {
+    public NewsFragment() {
         // Required empty public constructor
-        mNewsInfo = newsinfo;
     }
 
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
      * @return A new instance of fragment NewsFragment.
      */
-    // TODO: Rename and change types and number of parameters
-    public static NewsFragment newInstance(String param1, String param2,NewsInfo newsinfo) {
-        NewsFragment fragment = new NewsFragment(newsinfo);
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
+    public static NewsFragment newInstance(UUID uuid) {
+        NewsFragment fragment = new NewsFragment();
+        if(uuid != null) {
+            Bundle args = new Bundle();
+            args.putString(ARG_UUID, uuid.toString());
+            fragment.setArguments(args);
+        }
         return fragment;
     }
 
@@ -72,11 +66,29 @@ public class NewsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            Log.i(TAG,"get UUID:"+getArguments().getString(ARG_UUID));
+            muuid = UUID.fromString(getArguments().getString(ARG_UUID));
+        } else {
+            muuid = null;
+            Log.i(TAG,"do not get an argument!");
         }
-        if(mNewsInfo == null)
+
+        NewsInfoLab mNewsInfoLab = NewsInfoLab.get(getActivity());
+        if(mNewsInfoLab != null && muuid != null) {
+            Log.i(TAG,"get newsinfo from uuid"+muuid.toString());
+            mNewsInfo = mNewsInfoLab.getNewsInfo(muuid);
+            Log.i(TAG,"get info id" + mNewsInfo.getId());
+        } else {
+            Log.i(TAG,"Something is Wrong[null]!!");
+        }
+
+        if(mNewsInfo == null) {
+            Log.i(TAG,"NewsInfo is NULL!!");
             mNewsInfo = new NewsInfo();
+        }
+        else {
+            Log.i(TAG,"get NewsInfo Success!");
+        }
     }
 
     @Override
@@ -114,6 +126,7 @@ public class NewsFragment extends Fragment {
                 mNewsInfo.setRead(isChecked);
             }
         });
+
 
         mTitleField.setText(mNewsInfo.getTitle());
         mReadCheckbox.setChecked(mNewsInfo.isRead());

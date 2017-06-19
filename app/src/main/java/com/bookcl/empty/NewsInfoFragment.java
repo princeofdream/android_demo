@@ -29,6 +29,8 @@ public class NewsInfoFragment extends Fragment {
     private int mAction = 0;
     private OnListFragmentInteractionListener mListener;
 
+    public static NewsInfoLab mNewsInfoLab;
+
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
@@ -72,7 +74,7 @@ public class NewsInfoFragment extends Fragment {
             }
             // recyclerView.setAdapter(new NewsInfoRecyclerViewAdapter(DummyContent.ITEMS, mListener));
 
-            NewsInfoLab mNewsInfoLab = NewsInfoLab.get(getActivity());
+            mNewsInfoLab = NewsInfoLab.get(getActivity());
             List<NewsInfo> getNewsInfo = mNewsInfoLab.getallNewsInfo();
 
             recyclerView.setAdapter(new NewsInfoRecyclerViewAdapter(getNewsInfo, mListener,mAction));
