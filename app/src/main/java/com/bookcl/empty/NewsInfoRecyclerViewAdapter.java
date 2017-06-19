@@ -47,11 +47,13 @@ public class NewsInfoRecyclerViewAdapter extends RecyclerView.Adapter<NewsInfoRe
         holder.mContentView.setText(mValues.get(position).getTitle());
         holder.mBtn.setText("Btn " + position);
         holder.mBtn.setVisibility(View.INVISIBLE);
-        //holder.mReadStat.setVisibility(View.INVISIBLE);
+
+        /*
         if(mAction < 1)
             holder.mReadStat.setVisibility(View.INVISIBLE);
         else
             holder.mReadStat.setVisibility(View.VISIBLE);
+        */
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
