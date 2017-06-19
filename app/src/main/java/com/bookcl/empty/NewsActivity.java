@@ -20,7 +20,8 @@ implements NewsFragment.OnFragmentInteractionListener {
     public static final String KEY_NEWS_ACT_EXT = "com.bookcl.empty.news";
     public static final String KEY_NEWS_ACT_EXT_ID = "com.bookcl.empty.news_id";
     private static int get_news_data = 0;
-    private static NewsInfo mNewsInfo;
+    private static String get_news_id = "";
+    private static UUID mId = null;
 
     public void onFragmentInteraction(Uri uri) {
         Log.i(TAG,"James test communication!");
@@ -31,26 +32,30 @@ implements NewsFragment.OnFragmentInteractionListener {
         super.onCreate(savedInstanceState);
         Log.i(TAG,"onCreate");
         get_news_data = getIntent().getIntExtra(KEY_NEWS_ACT_EXT, 0);
+        get_news_id = getIntent().getStringExtra(KEY_NEWS_ACT_EXT_ID);
+        if(get_news_id != null)
+            mId = UUID.fromString(get_news_id);
+
         setContentView(R.layout.activity_news);
 
         FragmentManager fm = getSupportFragmentManager();
         Fragment mFragment = fm.findFragmentById(R.id.fragment_container);
 
         if(mFragment == null){
-            if(mNewsInfo != null)
-                mFragment = NewsFragment.newInstance(mNewsInfo.getId());
-            else
-                mFragment = NewsFragment.newInstance(null);
+            mFragment = NewsFragment.newInstance(mId);
             fm.beginTransaction()
                     .add(R.id.fragment_container,mFragment)
                     .commit();
         }
     }
 
-    public static Intent newIntent(Context packageContext, int mcount, NewsInfo newsinfo) {
+    public static Intent newIntent(Context packageContext, int mcount, UUID uuid) {
         Intent mNews_int = new Intent(packageContext,NewsActivity.class);
         mNews_int.putExtra(KEY_NEWS_ACT_EXT,mcount);
-        mNewsInfo = newsinfo;
+
+        if(uuid != null)
+            mNews_int.putExtra(KEY_NEWS_ACT_EXT_ID,uuid.toString());
+
         Log.i(TAG,"newIntent");
         return mNews_int;
     }
