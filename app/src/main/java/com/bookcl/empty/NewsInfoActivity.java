@@ -13,6 +13,7 @@ public class NewsInfoActivity extends FragmentActivity
 
     private static final String TAG = "[JamesL]-NewsInfoAct";
     public static final String KEY_NEWSINFO_ACT_EXT = "com.bookcl.empty.newsinfo";
+    public static final String KEY_NEWSINFO_ACT_EXT_ID = "com.bookcl.empty.newsinfo_id";
     private static int get_newsinfo_data = 0;
 
     FragmentManager fm = getSupportFragmentManager();
@@ -20,6 +21,9 @@ public class NewsInfoActivity extends FragmentActivity
 
     public void onListFragmentInteraction(NewsInfo item) {
         Log.i(TAG,"James test communication!");
+        Intent mNews_int = NewsActivity.newIntent(NewsInfoActivity.this,0, item);
+        startActivityForResult(mNews_int,MainActivity.REQUEST_CODE_NEWS);
+        Log.i(TAG,"Click News button");
     }
 
     public void LongPressAction(NewsInfo info, int index) {

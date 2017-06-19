@@ -16,7 +16,9 @@ implements NewsFragment.OnFragmentInteractionListener {
 
     private static final String TAG = "[JamesL]-News";
     public static final String KEY_NEWS_ACT_EXT = "com.bookcl.empty.news";
+    public static final String KEY_NEWS_ACT_EXT_ID = "com.bookcl.empty.news_id";
     private static int get_news_data = 0;
+    private static NewsInfo mNewsInfo;
 
     public void onFragmentInteraction(Uri uri) {
         Log.i(TAG,"James test communication!");
@@ -33,7 +35,7 @@ implements NewsFragment.OnFragmentInteractionListener {
         Fragment mFragment = fm.findFragmentById(R.id.fragment_container);
 
         if(mFragment == null){
-            mFragment = new NewsFragment();
+            mFragment = new NewsFragment(mNewsInfo);
             //mFragment = new NewsInfoFragment();
             //mFragment = NewsInfoFragment.newInstance(1);
             fm.beginTransaction()
@@ -42,9 +44,12 @@ implements NewsFragment.OnFragmentInteractionListener {
         }
     }
 
-    public static Intent newIntent(Context packageContext, int mcount) {
+    public static Intent newIntent(Context packageContext, int mcount, NewsInfo newsinfo) {
         Intent mNews_int = new Intent(packageContext,NewsActivity.class);
         mNews_int.putExtra(KEY_NEWS_ACT_EXT,mcount);
+        if(newsinfo != null){
+            mNewsInfo = newsinfo;
+        }
         Log.i(TAG,"newIntent");
         return mNews_int;
     }

@@ -45,8 +45,9 @@ public class NewsFragment extends Fragment {
     private Button mDateButton;
     private CheckBox mReadCheckbox;
 
-    public NewsFragment() {
+    public NewsFragment(NewsInfo newsinfo) {
         // Required empty public constructor
+        mNewsInfo = newsinfo;
     }
 
     /**
@@ -58,8 +59,8 @@ public class NewsFragment extends Fragment {
      * @return A new instance of fragment NewsFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static NewsFragment newInstance(String param1, String param2) {
-        NewsFragment fragment = new NewsFragment();
+    public static NewsFragment newInstance(String param1, String param2,NewsInfo newsinfo) {
+        NewsFragment fragment = new NewsFragment(newsinfo);
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -74,7 +75,8 @@ public class NewsFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-        mNewsInfo = new NewsInfo();
+        if(mNewsInfo == null)
+            mNewsInfo = new NewsInfo();
     }
 
     @Override
@@ -112,6 +114,9 @@ public class NewsFragment extends Fragment {
                 mNewsInfo.setRead(isChecked);
             }
         });
+
+        mTitleField.setText(mNewsInfo.getTitle());
+        mReadCheckbox.setChecked(mNewsInfo.isRead());
 
         return frag_view;
     }
