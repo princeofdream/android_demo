@@ -9,9 +9,9 @@ import android.support.v4.app.FragmentManager;
 import android.util.Log;
 
 public class NewsInfoActivity extends FragmentActivity
-implements NewsInfoFragment.OnListFragmentInteractionListener {
+        implements NewsInfoFragment.OnListFragmentInteractionListener {
 
-    private static final String TAG = "[JamesL]-NewsInfo";
+    private static final String TAG = "[JamesL]-NewsInfoAct";
     public static final String KEY_NEWSINFO_ACT_EXT = "com.bookcl.empty.newsinfo";
     private static int get_newsinfo_data = 0;
 
