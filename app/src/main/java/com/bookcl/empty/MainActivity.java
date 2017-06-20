@@ -289,7 +289,7 @@ public class MainActivity extends AppCompatActivity {
         mNewsPagerbtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                Intent mNewsPager_int = NewsPagerActivity.newIntent(MainActivity.this,0);
+                Intent mNewsPager_int = NewsPagerActivity.newIntent(MainActivity.this,null);
                 startActivityForResult(mNewsPager_int,REQUEST_CODE_NEWS_PAGER);
                 Log.i(TAG,"Click NewsPager button");
             }
