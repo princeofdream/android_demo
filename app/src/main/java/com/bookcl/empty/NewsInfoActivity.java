@@ -23,8 +23,12 @@ public class NewsInfoActivity extends FragmentActivity
 
     public void onListFragmentInteraction(NewsInfo item) {
         Log.i(TAG,"James test communication!");
+        /*
         Intent mNews_int = NewsActivity.newIntent(NewsInfoActivity.this,0, item.getId());
         startActivityForResult(mNews_int,MainActivity.REQUEST_CODE_NEWS);
+        */
+        Intent mNewsPager_int = NewsPagerActivity.newIntent(NewsInfoActivity.this, item.getId());
+        startActivityForResult(mNewsPager_int,MainActivity.REQUEST_CODE_NEWS);
         Log.i(TAG,"Click News button");
     }
 
