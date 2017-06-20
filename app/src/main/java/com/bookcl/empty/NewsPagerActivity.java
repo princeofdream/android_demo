@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -27,6 +28,7 @@ public class NewsPagerActivity extends FragmentActivity
 
     private ViewPager mViewPager;
     private List<NewsInfo> mNewsInfoList;
+    private SectionsPagerAdapter mSectionsPagerAdapter;
 
     FragmentManager fm;
     Fragment mFragment;
@@ -62,6 +64,10 @@ public class NewsPagerActivity extends FragmentActivity
 
         fm = getSupportFragmentManager();
 
+        mSectionsPagerAdapter=new SectionsPagerAdapter(fm);
+        mViewPager.setAdapter(mSectionsPagerAdapter);
+
+        /*
         mViewPager.setAdapter(new FragmentStatePagerAdapter(fm) {
             @Override
             public Fragment getItem(int position) {
@@ -75,6 +81,7 @@ public class NewsPagerActivity extends FragmentActivity
                 return ret;
             }
         });
+        */
 
         for (int i0 =0;i0< mNewsInfoList.size();i0++) {
             if(mNewsInfoList.get(i0).getId().equals(muuid)) {
@@ -96,4 +103,32 @@ public class NewsPagerActivity extends FragmentActivity
     public void onListFragmentInteraction() {
         Log.i(TAG,"onListFragmentInteraction");
     }
+
+
+    public class SectionsPagerAdapter extends /*FragmentPagerAdapter*/ FragmentStatePagerAdapter {
+
+        public SectionsPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            NewsInfo mNewsInfo = mNewsInfoList.get(position);
+            return NewsFragment.newInstance(mNewsInfo.getId());
+        }
+
+        @Override
+        public int getCount() {
+            int ret = mNewsInfoList.size();
+            return ret;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            String title = mNewsInfoList.get(position).getTitle();
+            return title;
+        }
+    }
+
+
 }
