@@ -28,8 +28,8 @@ public abstract class FragmentBaseActivity extends FragmentActivity {
         Log.i(TAG,"onCreate");
         setContentView(R.layout.activity_fragment_base);
 
-        FragmentManager fm = getSupportFragmentManager();
-        Fragment mFragment = fm.findFragmentById(R.id.fragment_container);
+        fm = getSupportFragmentManager();
+        mFragment = fm.findFragmentById(R.id.fragment_container);
 
         if(mFragment == null){
             //mFragment = NewsInfoFragment.newInstance(1);
