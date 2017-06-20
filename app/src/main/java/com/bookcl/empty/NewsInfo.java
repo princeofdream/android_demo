@@ -12,11 +12,13 @@ public class NewsInfo {
     private String mTitle;
     private Date mDate;
     private boolean mRead;
+    private long lId;
 
     public NewsInfo() {
         //gen unique id
         mId = UUID.randomUUID();
         mDate = new Date();
+        lId = 0;
     }
 
     public UUID getId(){
@@ -46,6 +48,14 @@ public class NewsInfo {
 
     public void setRead(boolean readed){
         mRead = readed;
+    }
+
+    public long getlId() {
+        return lId;
+    }
+
+    public void setlId(long id) {
+        lId = id;
     }
 
 }

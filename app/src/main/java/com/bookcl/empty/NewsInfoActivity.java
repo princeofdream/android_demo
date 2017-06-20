@@ -8,6 +8,8 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
 
+import java.util.UUID;
+
 public class NewsInfoActivity extends FragmentActivity
         implements NewsInfoFragment.OnListFragmentInteractionListener {
 
@@ -74,5 +76,21 @@ public class NewsInfoActivity extends FragmentActivity
     @Override
     protected void onResume() {
         super.onResume();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == MainActivity.REQUEST_CODE_NEWS){
+            if(data != null) {
+                String ret = data.getStringExtra(KEY_NEWSINFO_ACT_EXT_ID);
+                UUID getuuid = UUID.fromString(ret);
+                updateUI(getuuid);
+            }
+        }
+    }
+
+    public void updateUI(UUID uuid) {
+        NewsInfoFragment.updateUI(uuid);
     }
 }

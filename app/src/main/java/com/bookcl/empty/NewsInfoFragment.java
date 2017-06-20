@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * A fragment representing a list of Items.
@@ -30,6 +31,8 @@ public class NewsInfoFragment extends Fragment {
     private OnListFragmentInteractionListener mListener;
 
     public static NewsInfoLab mNewsInfoLab;
+    public static RecyclerView recyclerView;
+    public static NewsInfoRecyclerViewAdapter mNewsInfoRecyclerViewAdapter;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -66,18 +69,18 @@ public class NewsInfoFragment extends Fragment {
         // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
+            recyclerView = (RecyclerView) view;
             if (mColumnCount <= 1) {
                 recyclerView.setLayoutManager(new LinearLayoutManager(context));
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            // recyclerView.setAdapter(new NewsInfoRecyclerViewAdapter(DummyContent.ITEMS, mListener));
 
             mNewsInfoLab = NewsInfoLab.get(getActivity());
             List<NewsInfo> getNewsInfo = mNewsInfoLab.getallNewsInfo();
 
-            recyclerView.setAdapter(new NewsInfoRecyclerViewAdapter(getNewsInfo, mListener,mAction));
+            mNewsInfoRecyclerViewAdapter = new NewsInfoRecyclerViewAdapter(getNewsInfo, mListener,mAction);
+            recyclerView.setAdapter(mNewsInfoRecyclerViewAdapter);
 
         }
         return view;
@@ -98,6 +101,12 @@ public class NewsInfoFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    public static void updateUI(UUID uuid) {
+        int position = 0;
+        position = mNewsInfoRecyclerViewAdapter.getPosition(uuid);
+        recyclerView.getAdapter().notifyItemChanged(position);
     }
 
     /**

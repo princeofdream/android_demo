@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Adapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,7 +47,6 @@ public class NewsInfoRecyclerViewAdapter extends RecyclerView.Adapter<NewsInfoRe
         holder.mReadStat.setChecked(mValues.get(position).isRead());
         holder.mContentView.setText(mValues.get(position).getTitle());
         holder.mBtn.setText("Btn " + position);
-        holder.mBtn.setVisibility(View.INVISIBLE);
 
         /*
         if(mAction < 1)
@@ -54,6 +54,13 @@ public class NewsInfoRecyclerViewAdapter extends RecyclerView.Adapter<NewsInfoRe
         else
             holder.mReadStat.setVisibility(View.VISIBLE);
         */
+
+        holder.mReadStat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                holder.mItem.setRead(isChecked);
+            }
+        });
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,6 +93,18 @@ public class NewsInfoRecyclerViewAdapter extends RecyclerView.Adapter<NewsInfoRe
     @Override
     public int getItemCount() {
         return mValues.size();
+    }
+
+    public int getPosition(UUID uuid) {
+        Log.i(TAG,"get list size: "+ mValues.size());
+        int ret = 0;
+        for(int i0=0;i0<mValues.size();i0++) {
+            if ( mValues.get(i0).getId().equals(uuid)) {
+                ret = i0;
+                break;
+            }
+        }
+        return ret;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder /* implements View.OnClickListener */ {
