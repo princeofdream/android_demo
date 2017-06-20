@@ -31,7 +31,6 @@ public class NewsPagerActivity extends FragmentActivity
     private SectionsPagerAdapter mSectionsPagerAdapter;
 
     FragmentManager fm;
-    Fragment mFragment;
 
     public static Intent newIntent(Context packageContext, UUID uuid) {
         Intent mNewsPager_int = new Intent(packageContext,NewsPagerActivity.class);
@@ -89,21 +88,7 @@ public class NewsPagerActivity extends FragmentActivity
                 break;
             }
         }
-
-/*
-        mFragment = fm.findFragmentById(R.id.fragment_container);
-        if(mFragment == null){
-            mFragment = NewsPagerFragment.newInstance(1);
-            fm.beginTransaction()
-                    .add(R.id.fragment_container,mFragment)
-                    .commit();
-        }*/
     }
-
-    public void onListFragmentInteraction() {
-        Log.i(TAG,"onListFragmentInteraction");
-    }
-
 
     public class SectionsPagerAdapter extends /*FragmentPagerAdapter*/ FragmentStatePagerAdapter {
 
