@@ -76,6 +76,13 @@ public class NewsPagerActivity extends FragmentActivity
             }
         });
 
+        for (int i0 =0;i0< mNewsInfoList.size();i0++) {
+            if(mNewsInfoList.get(i0).getId().equals(muuid)) {
+                mViewPager.setCurrentItem(i0);
+                break;
+            }
+        }
+
 /*
         mFragment = fm.findFragmentById(R.id.fragment_container);
         if(mFragment == null){
