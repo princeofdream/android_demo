@@ -21,4 +21,6 @@
     <string name="news_read_stat">Read</string>
     <string name="news_btn_info">Info</string>
     <string name="news_checkbox_stat">isRead</string>
+
+    <string name="news_pager_btn">Pager</string>
 </resources>

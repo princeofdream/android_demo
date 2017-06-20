@@ -38,6 +38,8 @@ public class MainActivity extends AppCompatActivity {
     public static final int REQUEST_CODE_INFO = (1024+0);
     public static final int REQUEST_CODE_NEWS = (1024+1);
     private static final int REQUEST_CODE_NEWS_INFO = (1024+2);
+    public static final int REQUEST_CODE_NEWS_PAGER = (1024+3);
+
     public static final String KEY_SHOWTIME_ACT_EXT = "com.bookcl.empty.info_count";
     public static final String KEY_SHOWTIME_ACT_EXT_SHOW = "com.bookcl.empty.info_show";
 
@@ -283,6 +285,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        Button mNewsPagerbtn = (Button) this.findViewById(R.id.news_pager_btn);
+        mNewsPagerbtn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent mNewsPager_int = NewsPagerActivity.newIntent(MainActivity.this,0);
+                startActivityForResult(mNewsPager_int,REQUEST_CODE_NEWS_PAGER);
+                Log.i(TAG,"Click NewsPager button");
+            }
+        });
 
     }
 

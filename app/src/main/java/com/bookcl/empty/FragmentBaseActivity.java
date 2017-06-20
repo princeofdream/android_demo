@@ -18,9 +18,12 @@ public abstract class FragmentBaseActivity extends FragmentActivity {
 
     public static String TAG = "[JamesL]-FrgmBaseAct";
 
+    protected FragmentManager fm = null;
+    protected Fragment mFragment = null;
+
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
-        super.onCreate(savedInstanceState, persistentState);
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
         Log.i(TAG,"onCreate");
         setContentView(R.layout.activity_fragment_base);
@@ -39,6 +42,10 @@ public abstract class FragmentBaseActivity extends FragmentActivity {
                     .add(R.id.fragment_container,mFragment)
                     .commit();
         }
+    }
+
+    protected Fragment getFragment(){
+        return mFragment;
     }
 
     protected abstract Fragment StartNewFragment();
