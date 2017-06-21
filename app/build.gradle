@@ -6,7 +6,7 @@ android {
     defaultConfig {
         applicationId "com.bookcl.empty"
         minSdkVersion 17
-        targetSdkVersion 25
+        targetSdkVersion 21
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -27,6 +27,7 @@ android {
             // 设置支持的SO库架构
             abiFilters 'armeabi', 'armeabi-v7a', 'arm64-v8a' //, 'x86', 'x86_64'
         }
+        versionNameSuffix 'v'
     }
     buildTypes {
         release {
@@ -34,7 +35,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
     externalNativeBuild {
 //        cmake {
 //            path "CMakeLists.txt"
@@ -43,7 +43,8 @@ android {
             path file("src\\main\\jni\\Android.mk")
         }
     }
-
+    productFlavors {
+    }
 }
 
 dependencies {
@@ -51,7 +52,6 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.tencent.bugly:crashreport:latest.release'

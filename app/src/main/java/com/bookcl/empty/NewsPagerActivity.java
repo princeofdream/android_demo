@@ -46,7 +46,6 @@ public class NewsPagerActivity extends FragmentActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_news_pager);
 
         Log.i(TAG,"onCreate");
         muuid = (UUID) getIntent().getSerializableExtra(KEY_NEWSPAGER_ACT_EXT_ID);
@@ -55,10 +54,10 @@ public class NewsPagerActivity extends FragmentActivity
         else
             Log.i(TAG,"UUID is null");
         mNewsInfoList = NewsInfoLab.get(this).getallNewsInfo();
-        //mViewPager = new ViewPager(this);
-        //mViewPager.setId(R.id.newspager_viewpager);
-        //setContentView(mViewPager);
-        mViewPager = (ViewPager) findViewById(R.id.newspager_viewpager);
+        mViewPager = new ViewPager(this);
+        mViewPager.setId(R.id.newspager_viewpager);
+        setContentView(mViewPager);
+        //mViewPager = (ViewPager) findViewById(R.id.newspager_viewpager);
 
 
         fm = getSupportFragmentManager();
