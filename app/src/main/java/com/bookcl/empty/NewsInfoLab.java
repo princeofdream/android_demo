@@ -1,12 +1,18 @@
 package com.bookcl.empty;
 
 import android.content.Context;
+import android.nfc.Tag;
 import android.util.Log;
 
+import java.sql.Time;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
+import java.util.TimeZone;
 import java.util.UUID;
+import java.util.logging.SimpleFormatter;
 
 
 /**
@@ -41,6 +47,15 @@ public class NewsInfoLab {
             //Log.i(TAG,"get ramdom number: " + rmd.nextInt());
 
             newsinfo.setRead(rmd.nextBoolean());
+
+            long ltime=System.currentTimeMillis();
+            Time mtime = new Time(ltime);
+
+            Date mdate = new Date();
+            //mdate.setYear(2015+rmd.nextInt(3));
+            mdate.setMonth(rmd.nextInt(12));
+            mdate.setDate(1+rmd.nextInt(28));
+            newsinfo.setDate(mdate);
             mNewsInfo.add(newsinfo);
         }
     }

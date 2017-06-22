@@ -1,5 +1,6 @@
 package com.bookcl.empty;
 
+import android.app.Activity;
 import android.support.v4.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
@@ -18,6 +19,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 
+import java.util.Date;
 import java.util.Random;
 import java.util.UUID;
 
@@ -40,6 +42,7 @@ public class NewsFragment extends Fragment {
 
     private static final String TAG="[JamesL]-NewsFrag";
     private static final String NEWS_DIALOG_DATE = "NewsDialogDate";
+    private static final int REQUEST_DATE = 1024+0;
 
     private NewsInfo mNewsInfo;
     private EditText mTitleField;
@@ -139,8 +142,9 @@ public class NewsFragment extends Fragment {
             public void onClick(View v) {
                 //FragmentManager fm = getFragmentManager();
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
-                NewsDialogFragment mNewsDialog = NewsDialogFragment.newInstance("","");
+                NewsDialogFragment mNewsDialog = NewsDialogFragment.newInstance(mNewsInfo.getDate(),"");
 
+                mNewsDialog.setTargetFragment(NewsFragment.this, REQUEST_DATE);
                 //mNewsDialog.show(fm, NEWS_DIALOG_DATE);
                 mNewsDialog.show(ft, NEWS_DIALOG_DATE);
                 Log.i(TAG,"Click NewsPager button");
@@ -151,6 +155,18 @@ public class NewsFragment extends Fragment {
         mReadCheckbox.setChecked(mNewsInfo.isRead());
 
         return frag_view;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode != Activity.RESULT_OK) {
+            return ;
+        }
+        if(requestCode == REQUEST_DATE) {
+            Date mdate = (Date) data.getSerializableExtra(NewsDialogFragment.EXTRA_DATE);
+            mNewsInfo.setDate(mdate);
+            mDateButton.setText(mNewsInfo.getDate().toString());
+        }
     }
 
     @Override

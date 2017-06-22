@@ -1,17 +1,25 @@
 package com.bookcl.empty;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
+
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 
 /**
@@ -24,11 +32,15 @@ import android.widget.DatePicker;
  */
 public class NewsDialogFragment extends DialogFragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_NEWS_DIALOG_DATE = "new_dialog_date";
+    public static final String EXTRA_DATE = "com.bookcl.android.newsdialog.date";
     private static final String ARG_PARAM2 = "param2";
 
-    private String mParam1;
+    private static final String TAG = "[JamesL]-NewsDlgFrgm";
+
+    private Date mDate;
     private String mParam2;
+    private DatePicker mDatePicker;
 
     private static final boolean USE_XML_LAYOUT = false;
 
@@ -42,14 +54,14 @@ public class NewsDialogFragment extends DialogFragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
+     * @param date Parameter 1.
      * @param param2 Parameter 2.
      * @return A new instance of fragment NewsDialogFragment.
      */
-    public static NewsDialogFragment newInstance(String param1, String param2) {
+    public static NewsDialogFragment newInstance(Date date, String param2) {
         NewsDialogFragment fragment = new NewsDialogFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
+        args.putSerializable(ARG_NEWS_DIALOG_DATE, date);
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
@@ -59,21 +71,44 @@ public class NewsDialogFragment extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(getActivity());
         mBuilder.setTitle("Title by JamesL");
-        mBuilder.setPositiveButton(android.R.string.ok,null);
+        mDatePicker = new DatePicker(getActivity());
+        //mDataPicker.setId(View.generateViewId());
+        mDatePicker.setId(R.id.CUSTOM_ID_000);
 
-        // add new View layout into AlertDialog
-        if(USE_XML_LAYOUT) {
-            View view = LayoutInflater.from(getActivity())
-                    .inflate(R.layout.news_dialog_datepicker, null);
+        mBuilder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                int myear = mDatePicker.getYear();
+                int mmon = mDatePicker.getMonth();
+                int mday = mDatePicker.getDayOfMonth();
+                Log.i(TAG,"get date by picker:" +myear + "-" + mmon+"-"+mday);
+                Date date = new GregorianCalendar(myear, mmon, mday).getTime();
+                sendResult(Activity.RESULT_OK, date);
+            }
+        });
 
-            mBuilder.setView(view);
-        } else {
-            DatePicker mDataPicker = new DatePicker(getActivity());
-            //mDataPicker.setId(View.generateViewId());
-            mDataPicker.setId(R.id.CUSTOM_ID_000);
-            mBuilder.setView(mDataPicker);
-        }
+        mDate = (Date)getArguments().getSerializable(ARG_NEWS_DIALOG_DATE);
+        Calendar mcal = Calendar.getInstance();
+        mcal.setTime(mDate);
+        int myear = mcal.get(Calendar.YEAR);
+        int mmon = mcal.get(Calendar.MONTH);
+        int mday = mcal.get(Calendar.DAY_OF_MONTH);
+
+        Log.i(TAG,"get date:" +myear + "-" + mmon+"-"+mday);
+        mDatePicker.init(myear,mmon,mday,null);
+        mBuilder.setView(mDatePicker);
+
         return mBuilder.create();
+    }
+
+    private void sendResult(int resultCode, Date date) {
+        if (getTargetFragment() == null) {
+            return;
+        }
+        Intent intent = new Intent();
+        intent.putExtra(EXTRA_DATE, date);
+        getTargetFragment()
+                .onActivityResult(getTargetRequestCode(), resultCode, intent);
     }
 
 /*
@@ -81,7 +116,7 @@ public class NewsDialogFragment extends DialogFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
+            mDate = (Date)getArguments().getSerializable(ARG_NEWS_DIALOG_DATE);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
