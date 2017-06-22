@@ -39,9 +39,10 @@ public class Dlg_Frgm_Main extends DialogFragment {
         // Pick a style based on the num.
         int style = DialogFragment.STYLE_NORMAL, theme = 0;
         switch ((mNum-1)%6) {
+            case 0: style = DialogFragment.STYLE_NORMAL; break;
             case 1: style = DialogFragment.STYLE_NO_TITLE; break;
             case 2: style = DialogFragment.STYLE_NO_FRAME; break;
-            case 3: style = DialogFragment.STYLE_NO_INPUT; break;
+            //case 3: style = DialogFragment.STYLE_NO_INPUT; break;
             case 4: style = DialogFragment.STYLE_NORMAL; break;
             case 5: style = DialogFragment.STYLE_NORMAL; break;
             case 6: style = DialogFragment.STYLE_NO_TITLE; break;
@@ -49,11 +50,12 @@ public class Dlg_Frgm_Main extends DialogFragment {
             case 8: style = DialogFragment.STYLE_NORMAL; break;
         }
         switch ((mNum-1)%6) {
-            case 4: theme = android.R.style.Theme_Holo; break;
-            case 5: theme = android.R.style.Theme_Holo_Light_Dialog; break;
-            case 6: theme = android.R.style.Theme_Holo_Light; break;
-            case 7: theme = android.R.style.Theme_Holo_Light_Panel; break;
-            case 8: theme = android.R.style.Theme_Holo_Light; break;
+            case 0: theme = 0; break;
+            case 1: theme = android.R.style.Theme_Holo; break;
+            case 2: theme = android.R.style.Theme_Holo_Light_Dialog; break;
+            case 3: theme = android.R.style.Theme_Holo_Light; break;
+            case 4: theme = android.R.style.Theme_Holo_Light_Panel; break;
+            case 5: theme = android.R.style.Theme_Holo_Light; break;
         }
         setStyle(style, theme);
     }
@@ -62,8 +64,9 @@ public class Dlg_Frgm_Main extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.frgm_dlg_main_ly, container, false);
-        View tv = v.findViewById(R.id.dlg_info);
-        ((TextView)tv).setText("Dialog #" + mNum + ": using style ");
+        TextView tv = (TextView)v.findViewById(R.id.dlg_info);
+        tv.setTextColor(0xFFFF00FF);
+        tv.setText("Dialog #" + (mNum-1)%6 + ": using style ");
 
 
         // Watch for button clicks.

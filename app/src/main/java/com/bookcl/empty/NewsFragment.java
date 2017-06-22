@@ -1,10 +1,12 @@
 package com.bookcl.empty;
 
+import android.support.v4.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -37,6 +39,7 @@ public class NewsFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
 
     private static final String TAG="[JamesL]-NewsFrag";
+    private static final String NEWS_DIALOG_DATE = "NewsDialogDate";
 
     private NewsInfo mNewsInfo;
     private EditText mTitleField;
@@ -118,7 +121,7 @@ public class NewsFragment extends Fragment {
 
         mDateButton = (Button)frag_view.findViewById(R.id.news_info_btn);
         mDateButton.setText(mNewsInfo.getDate().toString());
-        mDateButton.setEnabled(false);
+        //mDateButton.setEnabled(false);
 
         mReadCheckbox = (CheckBox) frag_view.findViewById(R.id.news_checkbox_stat);
         mReadCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -131,6 +134,18 @@ public class NewsFragment extends Fragment {
             }
         });
 
+        mDateButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                //FragmentManager fm = getFragmentManager();
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                NewsDialogFragment mNewsDialog = NewsDialogFragment.newInstance("","");
+
+                //mNewsDialog.show(fm, NEWS_DIALOG_DATE);
+                mNewsDialog.show(ft, NEWS_DIALOG_DATE);
+                Log.i(TAG,"Click NewsPager button");
+            }
+        });
 
         mTitleField.setText(mNewsInfo.getTitle());
         mReadCheckbox.setChecked(mNewsInfo.isRead());

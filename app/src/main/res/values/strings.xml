@@ -23,4 +23,7 @@
     <string name="news_checkbox_stat">isRead</string>
 
     <string name="news_pager_btn">Pager</string>
+
+    <string name="news_dialog">Dialog</string>
+    <string name="news_dialog_btn">Dialog</string>
 </resources>
