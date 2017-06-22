@@ -7,6 +7,8 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -59,6 +61,7 @@ public class NewsInfoFragment extends Fragment {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
             mAction = getArguments().getInt(ARG_ACTION);
         }
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -122,5 +125,11 @@ public class NewsInfoFragment extends Fragment {
     public interface OnListFragmentInteractionListener {
         void onListFragmentInteraction(NewsInfo item);
         void LongPressAction(NewsInfo info, int index);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.fragment_news_list,menu);
     }
 }

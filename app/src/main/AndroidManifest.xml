@@ -50,11 +50,17 @@
                 <!-- <category android:name="android.intent.category.LAUNCHER"/> -->
             </intent-filter>
         </activity>
-        <activity android:name=".NewsActivity">
+        <activity
+            android:theme="@style/Theme.AppCompat.Light"
+            android:name=".NewsActivity">
         </activity>
-        <activity android:name=".NewsInfoActivity">
+        <activity
+            android:theme="@style/Theme.AppCompat.Light"
+            android:name=".NewsInfoActivity">
         </activity>
-        <activity android:name=".NewsPagerActivity">
+        <activity
+            android:theme="@style/Theme.AppCompat.Light"
+            android:name=".NewsPagerActivity">
         </activity>
     </application>
 

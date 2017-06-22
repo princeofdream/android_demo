@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.UUID;
 
 
-public class NewsPagerActivity extends FragmentActivity
+public class NewsPagerActivity extends AppCompatActivity
         // implements NewsPagerFragment.OnListFragmentInteractionListener
         implements NewsFragment.OnFragmentInteractionListener {
 

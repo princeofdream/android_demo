@@ -26,4 +26,5 @@
 
     <string name="news_dialog">Dialog</string>
     <string name="news_dialog_btn">Dialog</string>
+    <string name="menu_news_list">News List</string>
 </resources>

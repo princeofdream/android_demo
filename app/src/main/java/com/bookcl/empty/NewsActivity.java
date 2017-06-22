@@ -13,7 +13,7 @@ import android.util.Log;
 import java.util.UUID;
 
 
-public class NewsActivity extends FragmentActivity
+public class NewsActivity extends AppCompatActivity
 implements NewsFragment.OnFragmentInteractionListener {
 
     private static final String TAG = "[JamesL]-News";
