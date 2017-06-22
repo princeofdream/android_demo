@@ -11,6 +11,7 @@ import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.DatePicker;
 
 
 /**
@@ -28,6 +29,8 @@ public class NewsDialogFragment extends DialogFragment {
 
     private String mParam1;
     private String mParam2;
+
+    private static final boolean USE_XML_LAYOUT = false;
 
     private OnFragmentInteractionListener mListener;
 
@@ -57,6 +60,19 @@ public class NewsDialogFragment extends DialogFragment {
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(getActivity());
         mBuilder.setTitle("Title by JamesL");
         mBuilder.setPositiveButton(android.R.string.ok,null);
+
+        // add new View layout into AlertDialog
+        if(USE_XML_LAYOUT) {
+            View view = LayoutInflater.from(getActivity())
+                    .inflate(R.layout.news_dialog_datepicker, null);
+
+            mBuilder.setView(view);
+        } else {
+            DatePicker mDataPicker = new DatePicker(getActivity());
+            //mDataPicker.setId(View.generateViewId());
+            mDataPicker.setId(R.id.CUSTOM_ID_000);
+            mBuilder.setView(mDataPicker);
+        }
         return mBuilder.create();
     }
 
