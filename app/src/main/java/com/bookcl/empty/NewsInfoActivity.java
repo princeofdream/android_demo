@@ -19,8 +19,8 @@ public class NewsInfoActivity extends AppCompatActivity
     public static final String KEY_NEWSINFO_ACT_EXT_ID = "com.bookcl.empty.newsinfo_id";
     private static int get_newsinfo_data = 0;
 
-    FragmentManager fm = getSupportFragmentManager();
-    Fragment mFragment = fm.findFragmentById(R.id.fragment_container);
+    FragmentManager fm;
+    Fragment mFragment;
 
     public void onListFragmentInteraction(NewsInfo item) {
         Log.i(TAG,"James test communication!");
@@ -58,6 +58,9 @@ public class NewsInfoActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG,"onCreate");
+        fm = getSupportFragmentManager();
+        mFragment = fm.findFragmentById(R.id.fragment_container);
+
         get_newsinfo_data = getIntent().getIntExtra(KEY_NEWSINFO_ACT_EXT, 0);
         setContentView(R.layout.activity_newsinfo);
 

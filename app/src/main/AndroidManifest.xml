@@ -52,14 +52,17 @@
         </activity>
         <activity
             android:theme="@style/Theme.AppCompat.Light"
+            android:screenOrientation="fullSensor"
             android:name=".NewsActivity">
         </activity>
         <activity
             android:theme="@style/Theme.AppCompat.Light"
+            android:screenOrientation="fullSensor"
             android:name=".NewsInfoActivity">
         </activity>
         <activity
             android:theme="@style/Theme.AppCompat.Light"
+            android:screenOrientation="fullSensor"
             android:name=".NewsPagerActivity">
         </activity>
     </application>
