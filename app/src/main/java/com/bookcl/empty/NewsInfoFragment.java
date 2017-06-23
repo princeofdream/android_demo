@@ -1,17 +1,21 @@
 package com.bookcl.empty;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -80,7 +84,7 @@ public class NewsInfoFragment extends Fragment {
             }
 
             mNewsInfoLab = NewsInfoLab.get(getActivity());
-            List<NewsInfo> getNewsInfo = mNewsInfoLab.getallNewsInfo();
+            List<NewsInfo> getNewsInfo = mNewsInfoLab.getNewsInfoList();
 
             mNewsInfoRecyclerViewAdapter = new NewsInfoRecyclerViewAdapter(getNewsInfo, mListener,mAction);
             recyclerView.setAdapter(mNewsInfoRecyclerViewAdapter);
@@ -112,6 +116,10 @@ public class NewsInfoFragment extends Fragment {
         recyclerView.getAdapter().notifyItemChanged(position);
     }
 
+    public static void updateFullUI() {
+        recyclerView.getAdapter().notifyDataSetChanged();
+    }
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -125,11 +133,28 @@ public class NewsInfoFragment extends Fragment {
     public interface OnListFragmentInteractionListener {
         void onListFragmentInteraction(NewsInfo item);
         void LongPressAction(NewsInfo info, int index);
+        void onMenuAddItem(NewsInfo newsinfo);
     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.fragment_news_list,menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == R.id.menu_item_news_list) {
+            NewsInfo newsinfo = new NewsInfo();
+            newsinfo.setDate(new Date());
+            newsinfo.setTitle(null);
+            newsinfo.setRead(false);
+            mNewsInfoLab.AddNewsInfo(newsinfo);
+            Log.i(TAG,"Add newsinfo");
+            mListener.onMenuAddItem(newsinfo);
+        } else {
+            Log.i(TAG,"not select menu Add icon");
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

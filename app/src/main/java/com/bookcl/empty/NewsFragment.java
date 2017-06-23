@@ -134,6 +134,7 @@ public class NewsFragment extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 mNewsInfo.setRead(isChecked);
+                Log.i(TAG,"Set Read stat");
                 Intent data = new Intent();
                 data.putExtra(NewsInfoActivity.KEY_NEWSINFO_ACT_EXT_ID,mNewsInfo.getId().toString());
                 getActivity().setResult(MainActivity.REQUEST_CODE_NEWS,data);
@@ -175,6 +176,7 @@ public class NewsFragment extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
+        Log.i(TAG,"NewsFragment onStop");
         Intent data = new Intent();
         data.putExtra(NewsInfoActivity.KEY_NEWSINFO_ACT_EXT_ID,mNewsInfo.getId().toString());
         getActivity().setResult(MainActivity.REQUEST_CODE_NEWS,data);

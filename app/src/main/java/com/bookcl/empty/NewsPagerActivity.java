@@ -24,6 +24,7 @@ public class NewsPagerActivity extends AppCompatActivity
 
     private static final String TAG = "[JamesL]-NewsPgrAct";
     private static final String KEY_NEWSPAGER_ACT_EXT_ID = "com.bookcl.empty.newspager_id";
+    private static final String KEY_NEWSPAGER_ACT_EXT_ADD = "com.bookcl.empty.newspager_add";
     private UUID muuid;
 
     private ViewPager mViewPager;
@@ -49,11 +50,8 @@ public class NewsPagerActivity extends AppCompatActivity
 
         Log.i(TAG,"onCreate");
         muuid = (UUID) getIntent().getSerializableExtra(KEY_NEWSPAGER_ACT_EXT_ID);
-        if(muuid != null)
-            Log.i(TAG,"get UUID: " + muuid.toString());
-        else
-            Log.i(TAG,"UUID is null");
-        mNewsInfoList = NewsInfoLab.get(this).getallNewsInfo();
+
+        mNewsInfoList = NewsInfoLab.get(this).getNewsInfoList();
         mViewPager = new ViewPager(this);
         mViewPager.setId(R.id.newspager_viewpager);
         setContentView(mViewPager);
@@ -114,5 +112,8 @@ public class NewsPagerActivity extends AppCompatActivity
         }
     }
 
-
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
 }

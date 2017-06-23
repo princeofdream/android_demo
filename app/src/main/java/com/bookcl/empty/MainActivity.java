@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
     public static final int REQUEST_CODE_NEWS = (1024+1);
     private static final int REQUEST_CODE_NEWS_INFO = (1024+2);
     public static final int REQUEST_CODE_NEWS_PAGER = (1024+3);
+    public static final int REQUEST_CODE_NEWSINFO_ADD = (1024+3);
 
     public static final String KEY_SHOWTIME_ACT_EXT = "com.bookcl.empty.info_count";
     public static final String KEY_SHOWTIME_ACT_EXT_SHOW = "com.bookcl.empty.info_show";

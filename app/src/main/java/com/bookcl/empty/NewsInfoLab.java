@@ -24,8 +24,8 @@ public class NewsInfoLab {
 
     private static final String TAG = "[JamesL]-NewsInfoLab";
 
-    private static List<NewsInfo> mNewsInfo;
-    private static final int NEW_EVENT = 100;
+    private static List<NewsInfo> mNewsInfoList;
+    private static final int NEW_EVENT = 10;
 
     public static NewsInfoLab get(Context mContext) {
         if(sNewsInfoLab == null) {
@@ -38,39 +38,45 @@ public class NewsInfoLab {
     }
 
     private NewsInfoLab(Context mContext) {
-        mNewsInfo = new ArrayList<>();
+        mNewsInfoList = new ArrayList<>();
 
         for(int i0=0; i0 < NEW_EVENT; i0++) {
             NewsInfo newsinfo = new NewsInfo();
             newsinfo.setTitle("News # " + i0);
             Random rmd = new Random();
-            //Log.i(TAG,"get ramdom number: " + rmd.nextInt());
-
             newsinfo.setRead(rmd.nextBoolean());
-
-            long ltime=System.currentTimeMillis();
-            Time mtime = new Time(ltime);
 
             Date mdate = new Date();
             //mdate.setYear(2015+rmd.nextInt(3));
             mdate.setMonth(rmd.nextInt(12));
             mdate.setDate(1+rmd.nextInt(28));
             newsinfo.setDate(mdate);
-            mNewsInfo.add(newsinfo);
+
+            AddNewsInfo(newsinfo);
         }
     }
 
-    public List<NewsInfo> getallNewsInfo(){
-        return mNewsInfo;
+    public List<NewsInfo> getNewsInfoList(){
+        return mNewsInfoList;
     }
 
     public static NewsInfo getNewsInfo(UUID mId) {
-        for (NewsInfo gNewsInfo : mNewsInfo) {
+        for (NewsInfo gNewsInfo : mNewsInfoList) {
             if (gNewsInfo.getId().equals(mId)) {
                 return gNewsInfo;
             }
         }
         return null;
+    }
+
+    public int AddNewsInfo(NewsInfo newsinfo) {
+        if(newsinfo == null)
+            return -1;
+
+        if (newsinfo.getTitle() == null)
+            newsinfo.setTitle("[null] News # " + mNewsInfoList.size());
+        mNewsInfoList.add(newsinfo);
+        return 0;
     }
 
 }
