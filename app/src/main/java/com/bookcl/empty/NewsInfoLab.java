@@ -1,8 +1,12 @@
 package com.bookcl.empty;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.nfc.Tag;
 import android.util.Log;
+
+import com.bookcl.empty.NewsInfoDBSchema.NewsInfoTable;
 
 import java.sql.Time;
 import java.text.SimpleDateFormat;
@@ -26,6 +30,8 @@ public class NewsInfoLab {
 
     private static List<NewsInfo> mNewsInfoList;
     private static final int NEW_EVENT = 10;
+    private Context mCtx;
+    private SQLiteDatabase mDB;
 
     public static NewsInfoLab get(Context mContext) {
         if(sNewsInfoLab == null) {
@@ -39,6 +45,11 @@ public class NewsInfoLab {
 
     private NewsInfoLab(Context mContext) {
         mNewsInfoList = new ArrayList<>();
+
+        /* init DB */
+        mCtx = mContext.getApplicationContext();
+        mDB = new NewsInfoBaseHelper(mCtx).getWritableDatabase();
+        Log.i(TAG,"NewsInfoLab");
 
         for(int i0=0; i0 < NEW_EVENT; i0++) {
             NewsInfo newsinfo = new NewsInfo();
@@ -70,13 +81,36 @@ public class NewsInfoLab {
     }
 
     public int AddNewsInfo(NewsInfo newsinfo) {
+        Log.i(TAG,"AddNewsInfo");
+
         if(newsinfo == null)
             return -1;
+
+        ContentValues values = getContentValues(newsinfo);
+        mDB.insert(NewsInfoTable.NI_NAME,null,values);
 
         if (newsinfo.getTitle() == null)
             newsinfo.setTitle("[null] News # " + mNewsInfoList.size());
         mNewsInfoList.add(newsinfo);
         return 0;
+    }
+
+    public int UpdateNewsInfo(NewsInfo newsinfo) {
+        String mId = newsinfo.getId().toString();
+        ContentValues values = getContentValues(newsinfo);
+
+        mDB.update(NewsInfoTable.NI_NAME,values,NewsInfoTable.NIData.mId + " = ? " , new String[]{mId});
+        return 0;
+    }
+
+    private static ContentValues getContentValues (NewsInfo newsinfo) {
+        ContentValues values = new ContentValues();
+        values.put(NewsInfoTable.NIData.mId,newsinfo.getId().toString());
+        values.put(NewsInfoTable.NIData.mTitle,newsinfo.getTitle());
+        values.put(NewsInfoTable.NIData.mDate,newsinfo.getDate().getTime());
+        values.put(NewsInfoTable.NIData.mStat,newsinfo.isRead() ? 1:0);
+
+        return values;
     }
 
 }
