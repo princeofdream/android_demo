@@ -20,7 +20,7 @@ import java.util.UUID;
 
 public class NewsInfoRecyclerViewAdapter extends RecyclerView.Adapter<NewsInfoRecyclerViewAdapter.ViewHolder> {
 
-    private final List<NewsInfo> mValues;
+    private List<NewsInfo> mValues;
     private final OnListFragmentInteractionListener mListener;
     private int mAction;
 
@@ -93,6 +93,11 @@ public class NewsInfoRecyclerViewAdapter extends RecyclerView.Adapter<NewsInfoRe
     @Override
     public int getItemCount() {
         return mValues.size();
+    }
+
+    public void setNewsInfoList(List<NewsInfo> newsinfo) {
+        Log.i(TAG,"setNewsInfoList");
+        mValues = newsinfo;
     }
 
     public int getPosition(UUID uuid) {

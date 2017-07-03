@@ -16,7 +16,12 @@ public class NewsInfo {
 
     public NewsInfo() {
         //gen unique id
-        mId = UUID.randomUUID();
+        this(UUID.randomUUID());
+    }
+
+    public NewsInfo(UUID uuid) {
+        //gen unique id
+        mId = uuid;
         mDate = new Date();
         lId = 0;
     }

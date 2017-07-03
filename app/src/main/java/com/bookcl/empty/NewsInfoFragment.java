@@ -61,6 +61,7 @@ public class NewsInfoFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        Log.i(TAG,"onCreate");
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
             mAction = getArguments().getInt(ARG_ACTION);
@@ -71,6 +72,7 @@ public class NewsInfoFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Log.i(TAG,"onCreateView");
         View view = inflater.inflate(R.layout.fragment_newsinfo_list, container, false);
 
         // Set the adapter

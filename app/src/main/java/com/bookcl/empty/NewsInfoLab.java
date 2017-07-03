@@ -2,6 +2,7 @@ package com.bookcl.empty;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.nfc.Tag;
 import android.util.Log;
@@ -44,13 +45,16 @@ public class NewsInfoLab {
     }
 
     private NewsInfoLab(Context mContext) {
-        mNewsInfoList = new ArrayList<>();
+        // mNewsInfoList = new ArrayList<>();
 
         /* init DB */
         mCtx = mContext.getApplicationContext();
         mDB = new NewsInfoBaseHelper(mCtx).getWritableDatabase();
         Log.i(TAG,"NewsInfoLab");
 
+        /** We have insert db by manual **/
+
+        /*
         for(int i0=0; i0 < NEW_EVENT; i0++) {
             NewsInfo newsinfo = new NewsInfo();
             newsinfo.setTitle("News # " + i0);
@@ -65,19 +69,66 @@ public class NewsInfoLab {
 
             AddNewsInfo(newsinfo);
         }
+        */
+
     }
 
     public List<NewsInfo> getNewsInfoList(){
+        Log.i(TAG,"getNewsInfoList");
+        mNewsInfoList = null;
+        mNewsInfoList = new ArrayList<>();
+        NewsInfoCursorWrapper cursor = queryNewsInfo(null,null);
+        try {
+            cursor.moveToFirst();
+            Log.i(TAG,"Start List <" + cursor.getCount() + "> -->");
+
+            if (cursor.getCount() == 0 ) {
+                Log.i(TAG,"cursor count is 0");
+                return mNewsInfoList;
+            }
+
+            while(!cursor.isAfterLast()){
+
+                NewsInfo mNewsInfo = cursor.getNewsInfobyDB();
+                Log.i(TAG, "" + mNewsInfo.getTitle());
+                mNewsInfoList.add(mNewsInfo);
+                cursor.moveToNext();
+            }
+        } finally {
+            Log.i(TAG,"<-- End of List");
+            cursor.close();
+        }
+        Log.i(TAG,"mNewsInfoList size: " + mNewsInfoList.size());
         return mNewsInfoList;
     }
 
-    public static NewsInfo getNewsInfo(UUID mId) {
+    public NewsInfo getNewsInfo(UUID mId) {
+        /*
         for (NewsInfo gNewsInfo : mNewsInfoList) {
             if (gNewsInfo.getId().equals(mId)) {
                 return gNewsInfo;
             }
         }
         return null;
+        */
+        Log.i(TAG,"getNewsInfo");
+        NewsInfo mNewsInfo = null;
+        NewsInfoCursorWrapper cursor = queryNewsInfo(NewsInfoTable.NIData.mId + " = ? ",
+                new String[]{mId.toString()});
+
+        try {
+            if (cursor.getCount() == 0 ) {
+                Log.i(TAG,"cursor count is 0");
+                return null;
+            }
+
+            cursor.moveToFirst();
+            mNewsInfo = cursor.getNewsInfobyDB();
+        }finally {
+            cursor.close();
+        }
+
+        return mNewsInfo;
     }
 
     public int AddNewsInfo(NewsInfo newsinfo) {
@@ -101,6 +152,19 @@ public class NewsInfoLab {
 
         mDB.update(NewsInfoTable.NI_NAME,values,NewsInfoTable.NIData.mId + " = ? " , new String[]{mId});
         return 0;
+    }
+
+    public NewsInfoCursorWrapper queryNewsInfo(String whereClause, String[] whereArgs ) {
+        Log.i(TAG,"queryNewsInfo");
+        Cursor mcursor = mDB.query(NewsInfoTable.NI_NAME,
+                null,   //columns, null to select all columns
+                whereClause,
+                whereArgs,
+                null,   //group by
+                null,   //having
+                null    //order by
+                );
+        return new NewsInfoCursorWrapper(mcursor);
     }
 
     private static ContentValues getContentValues (NewsInfo newsinfo) {
