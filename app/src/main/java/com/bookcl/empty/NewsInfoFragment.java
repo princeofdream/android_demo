@@ -122,6 +122,12 @@ public class NewsInfoFragment extends Fragment {
         recyclerView.getAdapter().notifyDataSetChanged();
     }
 
+    public static void updateDeleteElementUI(UUID uuid) {
+        int position = 0;
+        position = mNewsInfoRecyclerViewAdapter.getPosition(uuid);
+        recyclerView.getAdapter().notifyItemRemoved(position);
+    }
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -136,6 +142,7 @@ public class NewsInfoFragment extends Fragment {
         void onListFragmentInteraction(NewsInfo item);
         void LongPressAction(NewsInfo info, int index);
         void onMenuAddItem(NewsInfo newsinfo);
+        int DeleteElement(NewsInfo newsinfo);
     }
 
     @Override

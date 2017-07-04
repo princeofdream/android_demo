@@ -1,5 +1,6 @@
 package com.bookcl.empty;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,6 +24,7 @@ public class NewsInfoRecyclerViewAdapter extends RecyclerView.Adapter<NewsInfoRe
     private List<NewsInfo> mValues;
     private final OnListFragmentInteractionListener mListener;
     private int mAction;
+    private Context mContext;
 
     private static final String TAG = "[JamesL]-NsInRcyAdp";
 
@@ -38,6 +40,7 @@ public class NewsInfoRecyclerViewAdapter extends RecyclerView.Adapter<NewsInfoRe
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.fragment_newsinfo, parent, false);
+        mContext = parent.getContext();
         return new ViewHolder(view);
     }
 
@@ -86,6 +89,8 @@ public class NewsInfoRecyclerViewAdapter extends RecyclerView.Adapter<NewsInfoRe
             @Override
             public void onClick(View v) {
                 Log.i(TAG,"Clicking btn"+ holder.mBtn.getText());
+                mListener.DeleteElement(holder.mItem);
+                mValues = NewsInfoLab.get(mContext).getNewsInfoList();
             }
         });
     }
@@ -101,7 +106,7 @@ public class NewsInfoRecyclerViewAdapter extends RecyclerView.Adapter<NewsInfoRe
     }
 
     public int getPosition(UUID uuid) {
-        Log.i(TAG,"get list size: "+ mValues.size());
+        Log.i(TAG,"getPosition get list size: "+ mValues.size());
         int ret = 0;
         for(int i0=0;i0<mValues.size();i0++) {
             if ( mValues.get(i0).getId().equals(uuid)) {

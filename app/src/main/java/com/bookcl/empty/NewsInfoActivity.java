@@ -61,6 +61,13 @@ public class NewsInfoActivity extends AppCompatActivity
         }
     }
 
+    public int DeleteElement(NewsInfo newsinfo) {
+        int ret;
+        ret = NewsInfoLab.get(getApplicationContext()).DeleteNewsInfo(newsinfo);
+        updateDeleteElementUI(newsinfo.getId());
+        return ret;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -120,6 +127,11 @@ public class NewsInfoActivity extends AppCompatActivity
     public void updateFullUI() {
         Log.i(TAG,"Update Full UI");
         NewsInfoFragment.updateFullUI();
+    }
+
+    public static void updateDeleteElementUI(UUID uuid) {
+        Log.i(TAG,"updateDeleteElementUI");
+        NewsInfoFragment.updateDeleteElementUI(uuid);
     }
 
 

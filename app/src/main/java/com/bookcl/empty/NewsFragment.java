@@ -114,6 +114,7 @@ public class NewsFragment extends Fragment {
         View frag_view = inflater.inflate(R.layout.fragment_news, container, false);
 
         mTitleField = (EditText) frag_view.findViewById(R.id.news_title_field);
+        mTitleField.setHint("News # ");
         mTitleField.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {

@@ -24,10 +24,6 @@ public class NewsInfoCursorWrapper extends CursorWrapper {
         long mDate = getLong(getColumnIndex(NewsInfoTable.NIData.mDate));
         int mStat = getInt(getColumnIndex(NewsInfoTable.NIData.mStat));
 
-        if(mTitle == null) {
-            mTitle = "null";
-        }
-
         NewsInfo mNewsInfo = new NewsInfo(UUID.fromString(mId));
         mNewsInfo.setTitle(mTitle);
         mNewsInfo.setDate(new Date(mDate));

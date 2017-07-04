@@ -137,12 +137,24 @@ public class NewsInfoLab {
         if(newsinfo == null)
             return -1;
 
-        ContentValues values = getContentValues(newsinfo);
-        mDB.insert(NewsInfoTable.NI_NAME,null,values);
-
-        if (newsinfo.getTitle() == null)
+        if (newsinfo.getTitle() == null || newsinfo.getTitle().length() == 0)
             newsinfo.setTitle("[null] News # " + mNewsInfoList.size());
         mNewsInfoList.add(newsinfo);
+        
+        ContentValues values = getContentValues(newsinfo);
+        mDB.insert(NewsInfoTable.NI_NAME,null,values);
+        return 0;
+    }
+
+    public int DeleteNewsInfo(NewsInfo newsinfo) {
+        Log.i(TAG,"AddNewsInfo");
+
+        if(newsinfo == null)
+            return -1;
+
+        ContentValues values = getContentValues(newsinfo);
+        mDB.delete(NewsInfoTable.NI_NAME,NewsInfoTable.NIData.mId + " =? ", new String[] {newsinfo.getId().toString()});
+
         return 0;
     }
 
