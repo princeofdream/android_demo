@@ -1,0 +1,32 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion "26.0.0"
+
+    defaultConfig {
+        applicationId "net.majorkernelpanic.spydroid"
+        minSdkVersion 21
+        targetSdkVersion 25
+        multiDexEnabled true
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-project.txt'
+        }
+    }
+}
+
+dependencies {
+    compile 'com.android.support:support-v4:25.3.0'
+    compile 'com.google.android.gms:play-services:+'
+    compile files('libs/acra-4.4.0.jar')
+    compile files('libs/GoogleAdMobAdsSdk-6.1.0.jar')
+    compile files('libs/sc-light-jdk15on-1.47.0.2.jar')
+    compile files('libs/scpkix-jdk15on-1.47.0.2.jar')
+    compile files('libs/scprov-jdk15on-1.47.0.2.jar')
+    compile 'org.jbundle.util.osgi.wrapped:org.jbundle.util.osgi.wrapped.org.apache.http.client:4.1.2'
+    compile 'com.android.support:multidex:1.0.1'
+}
