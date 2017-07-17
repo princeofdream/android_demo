@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:weightSum="1">
+
+    <ImageView
+        android:id="@+id/img_bg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right"
+        android:background="@drawable/rilakkuma_xmas_new_year"/>
+
+    <TextView
+        android:id="@+id/appinfo"
+        android:textColor="@color/tx_color_dark"
+        android:textSize="@dimen/activity_tx_size_24"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:text="@string/info"/>
+
+    <LinearLayout
+        android:layout_gravity="center_horizontal|center_vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/txinfo"
+            android:textColor="@color/tx_color_dark"
+            android:textSize="@dimen/activity_tx_size_24"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:text="@string/info"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/main_prev"
+                android:layout_gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawableLeft="@drawable/arrow_left"
+                android:text="@string/prev"/>
+
+            <Button
+                android:id="@+id/main_next"
+                android:layout_gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawableRight="@drawable/arrow_right"
+                android:text="@string/next"/>
+
+            <ImageButton
+                android:id="@+id/img_prev_bt"
+                android:layout_gravity="center_vertical"
+                android:layout_width="80dp"
+                android:layout_height="70dp"
+                android:background="@drawable/to_left"
+                android:layout_weight="0.51"/>
+
+            <ImageButton
+                android:id="@+id/img_next_bt"
+                android:layout_gravity="center_vertical"
+                android:layout_width="80dp"
+                android:layout_height="70dp"
+                android:background="@drawable/to_right_btn_bg"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/showtime_bt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/showtime_bt"/>
+
+            <Button
+                android:id="@+id/news_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/news_act"/>
+
+            <Button
+                android:id="@+id/newsinfo_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/news_btn_info"/>
+
+            <Button
+                android:id="@+id/news_pager_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/news_pager_btn"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/gd_main_bt"
+        android:layout_gravity="bottom|right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/frmg_dialog"/>
+
+</FrameLayout>
+
