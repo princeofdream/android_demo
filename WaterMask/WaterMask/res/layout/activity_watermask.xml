@@ -1,0 +1,45 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.watermask.WaterMaskActivity"
+    tools:ignore="MergeRootFrame" >
+
+	<LinearLayout
+		android:orientation="vertical"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:weightSum="1">
+
+		<TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
+			android:layout_weight="1.03"
+			android:textSize="36sp" />
+
+		<LinearLayout
+			android:orientation="horizontal"
+			android:layout_width="match_parent"
+			android:layout_height="71dp">
+
+			<Button
+                android:id="@+id/button1"
+                android:layout_width="204dp"
+                android:layout_height="wrap_content"
+                android:text="@string/Button" />
+
+			<Button
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:id="@+id/button"
+                android:text="@string/Button1" />
+		</LinearLayout>
+
+	</LinearLayout>
+
+</FrameLayout>
+

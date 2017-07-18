@@ -1,0 +1,565 @@
+commit eb542b8b87ea0d71c508adb859afae13a2f1eb48
+Author: lijin <lijin@hgrica.com>
+Date:   Tue Jan 10 11:51:07 2017 +0800
+
+    [Interface] Add WaterMask Interface
+
+diff --git a/device/mediatek/common/sepolicy/service_contexts b/device/mediatek/common/sepolicy/service_contexts
+index 70736e1375..9f09866a0e 100755
+--- a/device/mediatek/common/sepolicy/service_contexts
++++ b/device/mediatek/common/sepolicy/service_contexts
+@@ -37,3 +37,4 @@ multiwindow_service_v1 	u:object_r:system_app_service:s0
+ media.VTS           u:object_r:vtservice_service:s0
+ fm                  u:object_r:system_server_service:s0
+ mpu6050                 u:object_r:system_server_service:s0
++watermask                 u:object_r:system_server_service:s0
+diff --git a/frameworks/base/Android.mk b/frameworks/base/Android.mk
+index 562ae61600..1233f27fc9 100755
+--- a/frameworks/base/Android.mk
++++ b/frameworks/base/Android.mk
+@@ -202,6 +202,7 @@ LOCAL_SRC_FILES += \
+ 	core/java/android/nfc/INfcUnlockHandler.aidl \
+ 	core/java/android/ibox/IFMManager.aidl \
+ 	core/java/android/ibox/IInvenSenseManager.aidl \
++	core/java/android/ibox/IWaterMaskManager.aidl \
+ 	core/java/android/os/IBatteryPropertiesListener.aidl \
+ 	core/java/android/os/IBatteryPropertiesRegistrar.aidl \
+ 	core/java/android/os/ICancellationSignal.aidl \
+diff --git a/frameworks/base/api/current.txt b/frameworks/base/api/current.txt
+index 13bc12d2f0..4dcf692955 100755
+--- a/frameworks/base/api/current.txt
++++ b/frameworks/base/api/current.txt
+@@ -7292,6 +7292,7 @@ package android.content {
+     field public static final java.lang.String WIFI_P2P_SERVICE = "wifip2p";
+     field public static final java.lang.String WIFI_SERVICE = "wifi";
+     field public static final java.lang.String WINDOW_SERVICE = "window";
++    field public static final java.lang.String WaterMask_SERVICE = "watermask";
+   }
+ 
+   public class ContextWrapper extends android.content.Context {
+@@ -13444,6 +13445,20 @@ package android.ibox {
+     method public boolean onTransact(int, android.os.Parcel, android.os.Parcel, int) throws android.os.RemoteException;
+   }
+ 
++  public abstract interface IWaterMaskManager implements android.os.IInterface {
++    method public abstract int getPreviewWatermaskStat() throws android.os.RemoteException;
++    method public abstract int getRecordWatermaskStat() throws android.os.RemoteException;
++    method public abstract int setPreviewWatermaskStat(int) throws android.os.RemoteException;
++    method public abstract int setRecordWatermaskStat(int) throws android.os.RemoteException;
++  }
++
++  public static abstract class IWaterMaskManager.Stub extends android.os.Binder implements android.ibox.IWaterMaskManager {
++    ctor public IWaterMaskManager.Stub();
++    method public android.os.IBinder asBinder();
++    method public static android.ibox.IWaterMaskManager asInterface(android.os.IBinder);
++    method public boolean onTransact(int, android.os.Parcel, android.os.Parcel, int) throws android.os.RemoteException;
++  }
++
+   public class InvenSenseManager {
+     ctor public InvenSenseManager(android.content.Context, android.ibox.IInvenSenseManager);
+     method public int getMotionDuration();
+@@ -13453,6 +13468,14 @@ package android.ibox {
+     method public int setMotionThreshold(int);
+   }
+ 
++  public class WaterMaskManager {
++    ctor public WaterMaskManager(android.content.Context, android.ibox.IWaterMaskManager);
++    method public int getPreviewWatermaskStat();
++    method public int getRecordWatermaskStat();
++    method public int setPreviewWatermaskStat(int);
++    method public int setRecordWatermaskStat(int);
++  }
++
+ }
+ 
+ package android.inputmethodservice {
+diff --git a/frameworks/base/api/system-current.txt b/frameworks/base/api/system-current.txt
+index 05f7f1f051..86ddd38c54 100755
+--- a/frameworks/base/api/system-current.txt
++++ b/frameworks/base/api/system-current.txt
+@@ -7536,6 +7536,7 @@ package android.content {
+     field public static final java.lang.String WIFI_SCANNING_SERVICE = "wifiscanner";
+     field public static final java.lang.String WIFI_SERVICE = "wifi";
+     field public static final java.lang.String WINDOW_SERVICE = "window";
++    field public static final java.lang.String WaterMask_SERVICE = "watermask";
+   }
+ 
+   public class ContextWrapper extends android.content.Context {
+@@ -14164,6 +14165,20 @@ package android.ibox {
+     method public boolean onTransact(int, android.os.Parcel, android.os.Parcel, int) throws android.os.RemoteException;
+   }
+ 
++  public abstract interface IWaterMaskManager implements android.os.IInterface {
++    method public abstract int getPreviewWatermaskStat() throws android.os.RemoteException;
++    method public abstract int getRecordWatermaskStat() throws android.os.RemoteException;
++    method public abstract int setPreviewWatermaskStat(int) throws android.os.RemoteException;
++    method public abstract int setRecordWatermaskStat(int) throws android.os.RemoteException;
++  }
++
++  public static abstract class IWaterMaskManager.Stub extends android.os.Binder implements android.ibox.IWaterMaskManager {
++    ctor public IWaterMaskManager.Stub();
++    method public android.os.IBinder asBinder();
++    method public static android.ibox.IWaterMaskManager asInterface(android.os.IBinder);
++    method public boolean onTransact(int, android.os.Parcel, android.os.Parcel, int) throws android.os.RemoteException;
++  }
++
+   public class InvenSenseManager {
+     ctor public InvenSenseManager(android.content.Context, android.ibox.IInvenSenseManager);
+     method public int getMotionDuration();
+@@ -14173,6 +14188,14 @@ package android.ibox {
+     method public int setMotionThreshold(int);
+   }
+ 
++  public class WaterMaskManager {
++    ctor public WaterMaskManager(android.content.Context, android.ibox.IWaterMaskManager);
++    method public int getPreviewWatermaskStat();
++    method public int getRecordWatermaskStat();
++    method public int setPreviewWatermaskStat(int);
++    method public int setRecordWatermaskStat(int);
++  }
++
+ }
+ 
+ package android.inputmethodservice {
+diff --git a/frameworks/base/core/java/android/app/ContextImpl.java b/frameworks/base/core/java/android/app/ContextImpl.java
+index a825d55c99..8aad86acc1 100755
+--- a/frameworks/base/core/java/android/app/ContextImpl.java
++++ b/frameworks/base/core/java/android/app/ContextImpl.java
+@@ -206,6 +206,8 @@ import android.ibox.IFMManager;
+ import android.ibox.FMManager;
+ import android.ibox.IInvenSenseManager;
+ import android.ibox.InvenSenseManager;
++import android.ibox.IWaterMaskManager;
++import android.ibox.WaterMaskManager;
+ 
+ 
+ 
+@@ -701,12 +703,18 @@ class ContextImpl extends Context {
+                     IBinder b = ServiceManager.getService(FM_SERVICE);
+                     return new FMManager(ctx, IFMManager.Stub.asInterface(b));
+                 }});
+-                
++
+         registerService(InvenSense_SERVICE, new ServiceFetcher() {
+                 public Object createService(ContextImpl ctx) {
+                     IBinder b = ServiceManager.getService(InvenSense_SERVICE);
+                     return new InvenSenseManager(ctx, IInvenSenseManager.Stub.asInterface(b));
+                 }});
++
++        registerService(WaterMask_SERVICE, new ServiceFetcher() {
++                public Object createService(ContextImpl ctx) {
++                    IBinder b = ServiceManager.getService(WaterMask_SERVICE);
++                    return new WaterMaskManager(ctx, IWaterMaskManager.Stub.asInterface(b));
++                }});
+         //add by hgsoft
+ 
+         registerService(VIBRATOR_SERVICE, new ServiceFetcher() {
+diff --git a/frameworks/base/core/java/android/content/Context.java b/frameworks/base/core/java/android/content/Context.java
+index 294b58371c..ccdc6e0fc5 100755
+--- a/frameworks/base/core/java/android/content/Context.java
++++ b/frameworks/base/core/java/android/content/Context.java
+@@ -76,6 +76,7 @@ public abstract class Context {
+ 
+     public static final String FM_SERVICE ="fm";
+     public static final String InvenSense_SERVICE ="mpu6050";
++    public static final String WaterMask_SERVICE ="watermask";
+     
+ 
+     /**
+diff --git a/frameworks/base/core/java/android/ibox/IWaterMaskManager.aidl b/frameworks/base/core/java/android/ibox/IWaterMaskManager.aidl
+new file mode 100644
+index 0000000000..ed233d949c
+--- /dev/null
++++ b/frameworks/base/core/java/android/ibox/IWaterMaskManager.aidl
+@@ -0,0 +1,8 @@
++package android.ibox;
++
++interface IWaterMaskManager{
++    int setRecordWatermaskStat(int val);
++    int getRecordWatermaskStat();
++    int setPreviewWatermaskStat(int val);
++    int getPreviewWatermaskStat();
++}
+diff --git a/frameworks/base/core/java/android/ibox/WaterMaskManager.java b/frameworks/base/core/java/android/ibox/WaterMaskManager.java
+new file mode 100644
+index 0000000000..1487a6253d
+--- /dev/null
++++ b/frameworks/base/core/java/android/ibox/WaterMaskManager.java
+@@ -0,0 +1,65 @@
++package android.ibox;
++
++import android.os.Handler;
++import android.os.Message;
++import android.os.RemoteException;
++import android.util.Log;
++import android.content.Context;
++
++public class WaterMaskManager
++{
++    private static final String TAG = "WaterMaskManager";
++    private IWaterMaskManager iService;
++    private Context mContext;
++
++    public WaterMaskManager(Context context,IWaterMaskManager service)
++    {
++        this.mContext=context;
++        this.iService=service;
++    }
++
++    public int setPreviewWatermaskStat(int val)
++    {
++        int i=0;
++        try{
++            i = this.iService.setPreviewWatermaskStat(val);
++        }catch (RemoteException ex) {
++            Log.e("WaterMaskManager","setPreviewWatermaskStat: RemoteException", ex);
++        }
++        return i;
++    }
++
++    public int getPreviewWatermaskStat()
++    {
++        int i=0;
++        try{
++            i=this.iService.getPreviewWatermaskStat();
++        }catch(RemoteException ex) {
++            Log.e("WaterMaskManager","getPreviewWatermaskStat: RemoteException",ex);
++        }
++        return i;
++    }
++
++    public int setRecordWatermaskStat(int val)
++    {
++        int i=0;
++        try{
++            i = this.iService.setRecordWatermaskStat(val);
++        }catch (RemoteException ex) {
++            Log.e("WaterMaskManager","setRecordWatermaskStat: RemoteException", ex);
++        }
++        return i;
++    }
++
++    public int getRecordWatermaskStat()
++    {
++        int i=0;
++        try{
++            i=this.iService.getRecordWatermaskStat();
++        }catch(RemoteException ex) {
++            Log.e("WaterMaskManager","getRecordWatermaskStat: RemoteException",ex);
++        }
++        return i;
++    }
++
++}
+diff --git a/frameworks/base/services/core/java/com/android/server/WaterMaskService.java b/frameworks/base/services/core/java/com/android/server/WaterMaskService.java
+new file mode 100644
+index 0000000000..fb1d52bea5
+--- /dev/null
++++ b/frameworks/base/services/core/java/com/android/server/WaterMaskService.java
+@@ -0,0 +1,43 @@
++package com.android.server;
++import android.util.Log;
++import android.os.RemoteException;
++import android.content.Context;
++import android.util.Log;
++import android.ibox.IWaterMaskManager;
++
++public class WaterMaskService extends IWaterMaskManager.Stub {
++
++    public static WaterMaskService invservice;
++
++
++    public WaterMaskService(Context context)
++    {
++        super();
++    }
++
++    public int getPreviewWatermaskStat()
++    {
++        return get_PreviewWatermaskStat();
++    }
++
++    public int  setPreviewWatermaskStat(int val)
++    {
++        return set_PreviewWatermaskStat(val);
++    }
++
++    public int getRecordWatermaskStat()
++    {
++        return get_RecordWatermaskStat();
++    }
++
++    public int  setRecordWatermaskStat(int val)
++    {
++        return set_RecordWatermaskStat(val);
++    }
++
++    private native int get_RecordWatermaskStat();
++    private native int set_RecordWatermaskStat(int val);
++    private native int get_PreviewWatermaskStat();
++    private native int set_PreviewWatermaskStat(int val);
++
++}
+diff --git a/frameworks/base/services/core/jni/Android.mk b/frameworks/base/services/core/jni/Android.mk
+index 68cfd1adec..036183ce7f 100755
+--- a/frameworks/base/services/core/jni/Android.mk
++++ b/frameworks/base/services/core/jni/Android.mk
+@@ -34,6 +34,7 @@ LOCAL_SRC_FILES += \
+     $(LOCAL_REL_DIR)/com_android_server_display_DisplayPowerController.cpp \
+     $(LOCAL_REL_DIR)/com_android_server_FmService.cpp \
+     $(LOCAL_REL_DIR)/com_android_server_InvenSenseService.cpp \
++    $(LOCAL_REL_DIR)/com_android_server_WaterMaskService.cpp \
+     $(LOCAL_REL_DIR)/onload.cpp
+ 
+ ifneq (yes,$(MTK_BSP_PACKAGE))
+diff --git a/frameworks/base/services/core/jni/com_android_server_WaterMaskService.cpp b/frameworks/base/services/core/jni/com_android_server_WaterMaskService.cpp
+new file mode 100644
+index 0000000000..2bf47117c8
+--- /dev/null
++++ b/frameworks/base/services/core/jni/com_android_server_WaterMaskService.cpp
+@@ -0,0 +1,195 @@
++/*
++ * Copyright (C) 2014 Intel Corporation
++ *
++ * Licensed under the Apache License, Version 2.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ *
++ *      http://www.apache.org/licenses/LICENSE-2.0
++ *
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++
++#define LOG_TAG "WaterMask"
++
++#include "JNIHelp.h"
++#include "jni.h"
++
++#include <utils/Log.h>
++#include <utils/misc.h>
++#include <sys/ioctl.h>
++#include <stdlib.h>
++#include <errno.h>
++#include <fcntl.h>
++
++
++
++namespace android {
++
++
++#define VALUE_LEN_MAX 20
++
++static int readFromFile(const char *path, char* buf, size_t size, bool throwError)
++{
++    if (!path)
++        return -1;
++
++    int fd = open(path, O_RDWR);
++    if (fd < 0) {
++        if (throwError) {
++            ALOGE("Could not open '%s'", path);
++        }
++        return -1;
++    }
++
++    ssize_t count = read(fd, buf, size);
++    if (count > 0) {
++        while (count > 0 && buf[count-1] == '\n')
++            count--;
++        buf[count] = '\0';
++    } else {
++        buf[0] = '\0';
++    }
++
++    close(fd);
++    return count;
++}
++
++static int writeToFile(const char *path, int val)
++{
++    const int SIZE = 20;
++    int ret, fd, len;
++    char value[SIZE];
++
++    if (!path)
++        return -1;
++
++    fd = open(path, O_RDWR);
++    if (fd < 0) {
++        ALOGE("writeToFile: Could not open '%s' err: %d", path, errno);
++        return -1;
++    }
++
++    len = snprintf(value, SIZE, "%d\n", val);
++    ret = write(fd, value, len);
++
++    close(fd);
++    return (ret == len) ? 0 : -1;
++}
++
++
++static jint writeSysfs(JNIEnv* env, jobject obj, jstring jPath, jint jVal)
++{
++    int ret;
++    const char *path = NULL;
++
++    path = jPath ? env->GetStringUTFChars(jPath, NULL) : NULL;
++    if (!path) {
++        jniThrowNullPointerException(env, "path");
++        return -EINVAL;
++    }
++
++    ret = writeToFile(path, jVal);
++    env->ReleaseStringUTFChars(jPath, path);
++    return ret;
++}
++
++static jstring readSysfs(JNIEnv* env, jobject obj, jstring jPath)
++{
++    const char *path = NULL;
++    const int SIZE = 512;
++    char buf[SIZE];
++
++    path = jPath ? env->GetStringUTFChars(jPath, NULL) : NULL;
++    if (!path) {
++        jniThrowNullPointerException(env, "path");
++        return NULL;
++    }
++
++    if (readFromFile(path, buf, SIZE, true) > 0) {
++        env->ReleaseStringUTFChars(jPath, path);
++        return env->NewStringUTF(buf);
++    } else {
++        env->ReleaseStringUTFChars(jPath, path);
++        return NULL;
++    }
++}
++
++
++static jint accel_getRecordWatermaskStat_jni(JNIEnv* env,jobject thiz)
++{
++    const int SIZE = 20;
++    int count = -1;
++    char buf[SIZE];
++    int ret;
++
++    ret = 0;
++    ALOGD("--By JamesL---[%s:%d]---Entering:<%s>-",__FILE__,__LINE__,__func__);
++
++    return ret;
++}
++
++static jint accel_setRecordWatermaskStat_jni(JNIEnv* env,jobject thiz,jint val)
++{
++    int ret;
++
++    ret = 0;
++    ALOGD("--By JamesL---[%s:%d]---Entering:<%s>-",__FILE__,__LINE__,__func__);
++
++    return ret;
++}
++
++
++static jint accel_getPreviewWatermaskStat_jni(JNIEnv* env,jobject thiz)
++{
++    const int SIZE = 20;
++    int count = -1;
++    char buf[SIZE];
++    int ret;
++
++    ret = 0;
++    ALOGD("--By JamesL---[%s:%d]---Entering:<%s>-",__FILE__,__LINE__,__func__);
++
++    return ret;
++}
++
++static jint accel_setPreviewWatermaskStat_jni(JNIEnv* env,jobject thiz,jint val)
++{
++    int ret;
++
++    ret = 0;
++    ALOGD("--By JamesL---[%s:%d]---Entering:<%s>-",__FILE__,__LINE__,__func__);
++
++    return ret;
++}
++
++static JNINativeMethod sMethods[] = {
++    {"get_RecordWatermaskStat" ,"()I",(void *)accel_getRecordWatermaskStat_jni},
++    {"set_RecordWatermaskStat" ,"(I)I",(void *)accel_setRecordWatermaskStat_jni},
++    {"get_PreviewWatermaskStat" ,"()I",(void *)accel_getPreviewWatermaskStat_jni},
++    {"set_PreviewWatermaskStat" ,"(I)I",(void *)accel_setPreviewWatermaskStat_jni},
++};
++
++int register_android_service_WaterMaskService(JNIEnv* env)
++{
++    jclass clazz = env->FindClass("com/android/server/WaterMaskService");
++    if (clazz == NULL) {
++      ALOGE("Can't find com/android/server/WaterMaskService");
++        return JNI_FALSE;
++    }
++
++    if(env->RegisterNatives(clazz,sMethods,sizeof(sMethods)/sizeof(sMethods[0]))<0)
++    {
++        ALOGE("RegisterNatives ERROR");
++        return JNI_FALSE;
++    }
++
++    return JNI_TRUE;
++}
++
++}
++
+diff --git a/frameworks/base/services/core/jni/onload.cpp b/frameworks/base/services/core/jni/onload.cpp
+index ba0819989e..7fce0dddfd 100755
+--- a/frameworks/base/services/core/jni/onload.cpp
++++ b/frameworks/base/services/core/jni/onload.cpp
+@@ -54,6 +54,7 @@ int register_android_service_PerfService(JNIEnv* env);
+ int register_com_mediatek_perfservice_PerfServiceManager(JNIEnv* env);
+ int register_android_service_FmService(JNIEnv* env);
+ int register_android_service_InvenSenseService(JNIEnv* env);
++int register_android_service_WaterMaskService(JNIEnv* env);
+ #if defined (MTK_HDMI_SUPPORT)
+ int register_com_mediatek_hdmi_MtkHdmiManagerService(JNIEnv* env);
+ #endif
+@@ -106,6 +107,7 @@ extern "C" jint JNI_OnLoad(JavaVM* vm, void* reserved)
+     register_com_mediatek_perfservice_PerfServiceManager(env);
+     register_android_service_FmService(env);
+     register_android_service_InvenSenseService(env);
++    register_android_service_WaterMaskService(env);
+ #if defined (MTK_HDMI_SUPPORT)
+     register_com_mediatek_hdmi_MtkHdmiManagerService(env);
+ #endif
+diff --git a/frameworks/base/services/java/com/android/server/SystemServer.java b/frameworks/base/services/java/com/android/server/SystemServer.java
+index a7cc3a7adf..407f48dfe0 100755
+--- a/frameworks/base/services/java/com/android/server/SystemServer.java
++++ b/frameworks/base/services/java/com/android/server/SystemServer.java
+@@ -1056,7 +1056,7 @@ public final class SystemServer {
+                                } catch (Throwable e) {
+                                        Slog.e(TAG, "Failure starting FmHalService", e);
+                                }
+-                               
++
+             InvenSenseService inv=null;
+ 	        try {
+                     Slog.i(TAG, "InvenSenseService 1");
+@@ -1069,6 +1069,16 @@ public final class SystemServer {
+                                        Slog.e(TAG, "Failure starting InvenSenseService", e);
+                                }
+ 
++            //By JamesL 20170109
++            WaterMaskService mWatermask=null;
++            try {
++                Slog.i(TAG, "Start WaterMaskService...");
++                mWatermask  = new WaterMaskService(context);
++                ServiceManager.addService(Context.WaterMask_SERVICE, mWatermask);
++            } catch (Throwable e) {
++                Slog.e(TAG, "Failure to Start WaterMaskService", e);
++            }
++
+ //add by fa
+ 			LedService leds = null;
+ 			try {
