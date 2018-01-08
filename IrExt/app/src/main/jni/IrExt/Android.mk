@@ -3,7 +3,9 @@ include $(CLEAR_VARS)
 
 
 LOCAL_SRC_FILES:= \
-	 endless.c
+	 endless.c \
+	 hid.c \
+	 hidtest.cpp
 
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/../usb
 

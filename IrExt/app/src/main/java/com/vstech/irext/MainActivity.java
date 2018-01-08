@@ -7,6 +7,11 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbDeviceConnection;
+import android.hardware.usb.UsbEndpoint;
+import android.hardware.usb.UsbInterface;
+
+
+
 import android.hardware.usb.UsbManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -32,6 +37,10 @@ public class MainActivity extends AppCompatActivity {
 
     Button m_btn;
     Context context;
+
+    private byte[] m_bytes;
+    private static int TIMEOUT = 0;
+    private boolean forceClaim = true;
 
     private final BroadcastReceiver mUsbReceiver = new BroadcastReceiver() {
 
@@ -130,6 +139,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
             }
         }
+
         if(get_usb_device && device != null){
             manager.requestPermission(device, mPermissionIntent);
             UsbDeviceConnection connection = manager.openDevice(device);
@@ -139,6 +149,33 @@ public class MainActivity extends AppCompatActivity {
                 Log.e(TAG, "UsbManager openDevice failed");
                 return -1;
             }
+
+            /*try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }*/
+            //Log.d(TAG,"open usb device OK , fd = "+fd);
+            //sethid(fd);
+            m_bytes = new byte[10];
+            m_bytes[0] = 0x12;
+            m_bytes[1] = 0x13;
+            m_bytes[2] = 0x23;
+            m_bytes[3] = 0x45;
+            m_bytes[4] = 0x56;
+            m_bytes[5] = 0x16;
+            m_bytes[6] = 0x63;
+            m_bytes[7] = 0x64;
+            m_bytes[8] = (byte)0xA5;
+            m_bytes[9] = 0x66;
+
+
+            UsbInterface intf = device.getInterface(0);
+            UsbEndpoint endpoint = intf.getEndpoint(0);
+
+            connection.claimInterface(intf, forceClaim);
+            connection.bulkTransfer(endpoint, m_bytes, m_bytes.length, TIMEOUT);
+
             Log.d(TAG,"open usb device OK , fd = "+fd);
         }
         return 0;
