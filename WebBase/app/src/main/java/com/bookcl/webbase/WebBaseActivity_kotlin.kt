@@ -13,18 +13,18 @@ class WebBaseActivity_kotlin : AppCompatActivity() {
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
             R.id.navigation_home -> {
-                sample_text.setText(R.string.title_home)
-                Log.i(TAG,"nav to home");
+//                sample_text.setText(R.string.title_home)
+//                Log.i(TAG,"nav to home");
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_dashboard -> {
-                Log.i(TAG,"nav to dashboard");
-                sample_text.setText(R.string.title_dashboard)
+//                Log.i(TAG,"nav to dashboard");
+//                sample_text.setText(R.string.title_dashboard)
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_notifications -> {
-                Log.i(TAG,"nav to notification");
-                sample_text.setText(R.string.title_notifications)
+//                Log.i(TAG,"nav to notification");
+//                sample_text.setText(R.string.title_notifications)
                 return@OnNavigationItemSelectedListener true
             }
         }
@@ -36,8 +36,8 @@ class WebBaseActivity_kotlin : AppCompatActivity() {
         setContentView(R.layout.activity_web_base)
 
         // Example of a call to a native method
-        sample_text.text = stringFromJNI()
-       // navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        //sample_text.text = stringFromJNI()
+        //navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         //WebBaseHomeFragment mWebBaseHomeFragment;
 
