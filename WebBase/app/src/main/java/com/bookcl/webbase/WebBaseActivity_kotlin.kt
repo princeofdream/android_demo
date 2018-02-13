@@ -6,7 +6,7 @@ import android.support.design.widget.BottomNavigationView
 import android.util.Log
 import kotlinx.android.synthetic.main.activity_web_base.*
 
-class WebBaseActivity : AppCompatActivity() {
+class WebBaseActivity_kotlin : AppCompatActivity() {
 
     private val TAG = "SnepClient"
 
@@ -37,7 +37,12 @@ class WebBaseActivity : AppCompatActivity() {
 
         // Example of a call to a native method
         sample_text.text = stringFromJNI()
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+       // navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+        //WebBaseHomeFragment mWebBaseHomeFragment;
+
+
+
     }
 
     /**
