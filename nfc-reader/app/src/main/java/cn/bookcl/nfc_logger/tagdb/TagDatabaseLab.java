@@ -109,7 +109,8 @@ public class TagDatabaseLab {
             while(!cursor.isAfterLast()){
                 TagDatabaseStruct mTagDatabaseStruct = cursor.getTagDatabaseStructbyDB();
                 Log.i(TAG, "" + mTagDatabaseStruct.getVar_payload());
-                mTagDatabaseStructList.add(mTagDatabaseStruct);
+//                mTagDatabaseStructList.add(mTagDatabaseStruct);
+                DeleteTagDatabaseStruct(mTagDatabaseStruct);
                 cursor.moveToNext();
             }
         } finally {

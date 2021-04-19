@@ -27,6 +27,7 @@ import java.util.Locale;
 import cn.bookcl.nfc_logger.record.ParsedNdefRecord;
 import cn.bookcl.nfc_logger.tagdb.TagDatabaseHelper;
 import cn.bookcl.nfc_logger.tagdb.TagDatabaseLab;
+import cn.bookcl.nfc_logger.tagdb.TagDatabaseStruct;
 import cn.bookcl.nfc_logger.tagdb.TagDatabaseTable;
 
 import android.app.Activity;
@@ -35,6 +36,7 @@ import android.app.PendingIntent;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
@@ -50,6 +52,11 @@ import android.os.IBinder;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.provider.Settings;
+import android.support.annotation.Nullable;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -75,7 +82,15 @@ public class TagViewer extends Activity {
 
     private List<Tag> mTags = new ArrayList<>();
 
+    private int mColumnCount = 1;
+    private RecyclerView mRecyclerView;
+    private RecyclerView.LayoutManager mLayoutManager;
+    private RecyclerViewAdapter mRecyclerViewAdapter;
+
     private SQLiteDatabase mDB;
+    private TagDatabaseLab mdblab;
+
+    public List<TagDatabaseStruct> mTagDatabaseStructList = new ArrayList<TagDatabaseStruct>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,8 +104,8 @@ public class TagViewer extends Activity {
         mAdapter = NfcAdapter.getDefaultAdapter(this);
         if (mAdapter == null) {
             showMessage(R.string.error, R.string.no_nfc);
-            finish();
-            return;
+//            finish();
+//            return;
         }
 
         mPendingIntent = PendingIntent.getActivity(this, 0,
@@ -101,8 +116,21 @@ public class TagViewer extends Activity {
         mDB = new TagDatabaseHelper(this).getWritableDatabase();
 
         ContentValues values = getContentValues(1);
-        //LoadTagHistory();
-        //TagDatabaseLab mdblab = new TagDatabaseLab(this);
+//        LoadTagHistory();
+        mdblab = new TagDatabaseLab(this);
+        mTagDatabaseStructList = mdblab.getTagDatabaseStructList();
+
+        mRecyclerView = (RecyclerView) findViewById(R.id.tag_viewer_list);
+//
+//        for (int i = 0; i < 10; i++) {
+//            data.add("列表项" + i);
+//        }
+
+        mLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerViewAdapter = new RecyclerViewAdapter(this, mTagDatabaseStructList);
+        mRecyclerView.setAdapter(mRecyclerViewAdapter);
+
     }
 
 
@@ -472,6 +500,20 @@ public class TagViewer extends Activity {
             content.addView(record.getView(this, inflater, content, i), 1 + i);
             content.addView(inflater.inflate(R.layout.tag_divider, content, false), 2 + i);
         }
+        TagDatabaseStruct mTagDatabaseStruct = new TagDatabaseStruct();
+        int item_count = mRecyclerViewAdapter.getItemCount();
+        mTagDatabaseStruct.setVar_count(item_count+1);
+        mTagDatabaseStruct.setVar_payload("payload_"+item_count);
+        mTagDatabaseStruct.setVar_date(new Date());
+        mRecyclerViewAdapter.addData(item_count+1, mTagDatabaseStruct);
+        mdblab.AddTagDatabaseStruct(mTagDatabaseStruct);
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(String name, Context context, AttributeSet attrs) {
+
+        return super.onCreateView(name, context, attrs);
     }
 
     @Override
@@ -483,8 +525,18 @@ public class TagViewer extends Activity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        if (mTags.size() == 0) {
+        if (mTags.size() == 0 && mRecyclerViewAdapter.getItemCount() == 0) {
             Toast.makeText(this, R.string.nothing_scanned, Toast.LENGTH_LONG).show();
+            return true;
+        } else if (mTags.size() == 0 && mRecyclerViewAdapter.getItemCount() != 0) {
+            if(item.getItemId() == R.id.menu_main_clear) {
+                int i0 = 0;
+                for (i0 = mRecyclerViewAdapter.getItemCount()-1; i0 >=0; i0--) {
+                    mRecyclerViewAdapter.delData(i0);
+                }
+
+                mdblab.clearTagDatabaseStructList();
+            }
             return true;
         }
 
@@ -517,6 +569,12 @@ public class TagViewer extends Activity {
                 mTagContent.removeViewAt(i);
             }
         }
+        int i0 = 0;
+        for (i0 = mRecyclerViewAdapter.getItemCount()-1; i0 >=0; i0--) {
+            mRecyclerViewAdapter.delData(i0);
+        }
+
+        mdblab.clearTagDatabaseStructList();
     }
 
     private void copyIds(String text) {

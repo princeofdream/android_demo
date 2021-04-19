@@ -38,7 +38,7 @@
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="100dp">
 
             <LinearLayout
                 android:id="@+id/log_list"
@@ -48,6 +48,12 @@
 
             </LinearLayout>
         </ScrollView>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/tag_viewer_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </android.support.v7.widget.RecyclerView>
 
     </LinearLayout>
 </LinearLayout>
