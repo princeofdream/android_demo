@@ -43,6 +43,7 @@ public class NdefMessageParser {
 
     /** Parse an NdefMessage */
     public static List<ParsedNdefRecord> parse(NdefMessage message) {
+        Log.w("james_nfc_log", "NdefMessageParser parse 002 ---------");
         return getRecords(message.getRecords());
     }
 
@@ -59,9 +60,15 @@ public class NdefMessageParser {
             	elements.add(new ParsedNdefRecord() {
 					@Override
 					public View getView(Activity activity, LayoutInflater inflater, ViewGroup parent, int offset) {
+					    String record_payload;
 				        TextView text = (TextView) inflater.inflate(R.layout.tag_text, parent, false);
-				        text.setText(new String(record.getPayload()));
-                        Log.w("logbyJames", "002 text is ---->>>> " + record.getPayload()  + "<<<-----");
+				        record_payload=new String(record.getPayload());
+//				        if ("Consys work time TAG --byJamesLee".equals(record_payload))
+//				            text.setText("上班打卡时间: ");
+//				        else
+                            text.setText(record_payload);
+
+                        Log.w("james_nfc_log", "text -->>>>" + record_payload  + "<<<--- org: " + record.toString());
 				        return text;
 					}
             		

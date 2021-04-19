@@ -25,13 +25,19 @@ import java.util.List;
 import java.util.Locale;
 
 import cn.bookcl.nfc_logger.record.ParsedNdefRecord;
+import cn.bookcl.nfc_logger.tagdb.TagDatabaseHelper;
+import cn.bookcl.nfc_logger.tagdb.TagDatabaseLab;
+import cn.bookcl.nfc_logger.tagdb.TagDatabaseTable;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.content.ClipData;
 import android.content.ClipboardManager;
+import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
@@ -44,6 +50,7 @@ import android.os.IBinder;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -68,6 +75,8 @@ public class TagViewer extends Activity {
 
     private List<Tag> mTags = new ArrayList<>();
 
+    private SQLiteDatabase mDB;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,6 +97,23 @@ public class TagViewer extends Activity {
                 new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
         mNdefPushMessage = new NdefMessage(new NdefRecord[] { newTextRecord(
                 "Message from NFC Reader :-)", Locale.ENGLISH, true) });
+
+        mDB = new TagDatabaseHelper(this).getWritableDatabase();
+
+        ContentValues values = getContentValues(1);
+        //LoadTagHistory();
+        //TagDatabaseLab mdblab = new TagDatabaseLab(this);
+    }
+
+
+    private static ContentValues getContentValues (int count) {
+        ContentValues values = new ContentValues();
+        values.put(TagDatabaseTable.NIData.mId, "id_"+count);
+        values.put(TagDatabaseTable.NIData.mPayload,"payload_"+count);
+        values.put(TagDatabaseTable.NIData.mDate, "date_"+count);
+        values.put(TagDatabaseTable.NIData.mCount,"count_"+count);
+
+        return values;
     }
 
     private void showMessage(int title, int message) {
@@ -396,6 +422,34 @@ public class TagViewer extends Activity {
         return result;
     }
 
+
+    void LoadTagHistory()
+    {
+        byte[] var_pyload={0x43, 0x6F, 0x6E, 0x73, 0x79, 0x73, 0x20, 0x77,
+                0x6F, 0x72, 0x6B, 0x20, 0x74, 0x69, 0x6D, 0x65,
+                0x20, 0x54, 0x41, 0x47, 0x20, 0x2D, 0x2D, 0x62,
+                0x79, 0x4A, 0x61, 0x6D, 0x65, 0x73, 0x43, 0x43};
+        byte[] vat_type= {0x63, 0x6F, 0x6E, 0x73, 0x79, 0x73, 0x20, 0x77,
+                0x6F, 0x72, 0x6B, 0x20, 0x74, 0x69, 0x6D, 0x65,
+                0x20, 0x74, 0x61, 0x67, 0x20, 0x2D, 0x2D, 0x62,
+                0x79, 0x6A, 0x61, 0x6D, 0x65, 0x73, 0x6C, 0x65,
+                0x65};
+        short var_tnf = 2;
+        NdefRecord james_rec[] = new NdefRecord[128];;
+        james_rec[0] = new NdefRecord(var_tnf, vat_type,new byte[0], var_pyload);
+        james_rec[1] = new NdefRecord(var_tnf, vat_type,new byte[0], var_pyload);
+        james_rec[2] = new NdefRecord(var_tnf, vat_type,new byte[0], var_pyload);
+        james_rec[3] = new NdefRecord(var_tnf, vat_type,new byte[0], var_pyload);
+
+
+        NdefMessage var_msg = new NdefMessage(new NdefRecord[] { james_rec[0],james_rec[1],james_rec[2],james_rec[3] });
+//        List<ParsedNdefRecord> records = NdefMessageParser.parse(var_msgs);
+        NdefMessage[] var_msgs = new NdefMessage[] { var_msg };
+        buildTagViews(var_msgs);
+
+
+    }
+
     void buildTagViews(NdefMessage[] msgs) {
         if (msgs == null || msgs.length == 0) {
             return;
@@ -406,7 +460,9 @@ public class TagViewer extends Activity {
         // Parse the first message in the list
         // Build views for all of the sub records
         Date now = new Date();
+        Log.w("james_nfc_log", "TagViewer parse 001 ---------");
         List<ParsedNdefRecord> records = NdefMessageParser.parse(msgs[0]);
+
         final int size = records.size();
         for (int i = 0; i < size; i++) {
             TextView timeView = new TextView(this);

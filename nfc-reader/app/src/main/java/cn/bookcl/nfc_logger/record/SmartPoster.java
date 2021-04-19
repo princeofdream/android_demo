@@ -24,6 +24,7 @@ import android.app.Activity;
 import android.nfc.FormatException;
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -102,6 +103,7 @@ public class SmartPoster implements ParsedNdefRecord {
     public static SmartPoster parse(NdefRecord record) {
         Preconditions.checkArgument(record.getTnf() == NdefRecord.TNF_WELL_KNOWN);
         Preconditions.checkArgument(Arrays.equals(record.getType(), NdefRecord.RTD_SMART_POSTER));
+        Log.w("james_nfc_log", "SmartPoster parse 001 ---------");
         try {
             NdefMessage subRecords = new NdefMessage(record.getPayload());
             return parse(subRecords.getRecords());
@@ -112,6 +114,7 @@ public class SmartPoster implements ParsedNdefRecord {
 
     public static SmartPoster parse(NdefRecord[] recordsRaw) {
         try {
+            Log.w("james_nfc_log", "SmartPoster parse 002 ---------");
             Iterable<ParsedNdefRecord> records = NdefMessageParser.getRecords(recordsRaw);
             UriRecord uri = Iterables.getOnlyElement(Iterables.filter(records, UriRecord.class));
             TextRecord title = getFirstIfExists(records, TextRecord.class);
@@ -133,6 +136,7 @@ public class SmartPoster implements ParsedNdefRecord {
     }
 
     public View getView(Activity activity, LayoutInflater inflater, ViewGroup parent, int offset) {
+        Log.w("james_nfc_log", "SmartPoster getView ---------");
         if (mTitleRecord != null) {
             // Build a container to hold the title and the URI
             LinearLayout container = new LinearLayout(activity);
