@@ -1,5 +1,6 @@
 package cn.bookcl.nfc_logger;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -11,7 +12,9 @@ import android.view.ViewGroup;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import cn.bookcl.nfc_logger.tagdb.TagDatabaseStruct;
@@ -39,12 +42,20 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         return position;
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
        // viewHolder.tv_id.setText(mTagDatabaseStructList.get(position).getVar_id() + "");
         viewHolder.tv_pyload.setText((CharSequence) mTagDatabaseStructList.get(position).getVar_payload());
-        viewHolder.tv_date.setText((CharSequence) mTagDatabaseStructList.get(position).getVar_date().toString());
-        viewHolder.tv_count.setText(mTagDatabaseStructList.get(position).getVar_count() + "");
+
+        viewHolder.tv_count.setText(String.format(" [ %03d ] ", mTagDatabaseStructList.get(position).getVar_count()));
+
+        long time=System.currentTimeMillis();//long now = android.os.SystemClock.uptimeMillis();
+        SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date_val=mTagDatabaseStructList.get(position).getVar_date();
+        String date_val_str=format.format(date_val);
+
+        viewHolder.tv_date.setText(String.format(" [ %s ] ", date_val_str));
     }
 
     @Override

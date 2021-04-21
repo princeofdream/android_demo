@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content">
     <!--
          Copyright (C) 2010 The Android Open Source Project
@@ -21,40 +24,83 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:textIsSelectable="true"
-        android:layout_weight="1"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tag_text_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:background="?android:attr/listDivider"
             />
 
-        <TextView
-            android:id="@+id/tag_text_id"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_weight="1"
+            android:orientation="horizontal"
+            android:textIsSelectable="true">
+
+<!--            <Button-->
+<!--                android:id="@+id/button"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_weight="0"-->
+<!--                android:text="Button" />-->
+<!--            <View-->
+<!--                android:layout_width="2dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:background="?android:attr/listDivider"-->
+<!--                />-->
+
+            <TextView
+                android:id="@+id/tag_text_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                />
+            <View
+                android:layout_width="2dp"
+                android:layout_height="wrap_content"
+                android:background="?android:attr/listDivider"
+                />
+
+            <TextView
+                android:id="@+id/tag_text_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0" />
+            <View
+                android:layout_width="2dp"
+                android:layout_height="wrap_content"
+                android:background="?android:attr/listDivider"
+                />
+            <TextView
+                android:id="@+id/tag_text_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0" />
+            <View
+                android:layout_width="2dp"
+                android:layout_height="wrap_content"
+                android:background="?android:attr/listDivider"
+                />
+
+            <TextView
+                android:id="@+id/tag_text_payload"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+            <View
+                android:layout_width="2dp"
+                android:layout_height="wrap_content"
+                android:background="?android:attr/listDivider"
+                />
+
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:background="?android:attr/listDivider"
             />
-
-
-        <TextView
-            android:id="@+id/tag_text_count"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            />
-
-        <TextView
-            android:id="@+id/tag_text_payload"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            />
-
-
-
     </LinearLayout>
+
 </android.support.constraint.ConstraintLayout>

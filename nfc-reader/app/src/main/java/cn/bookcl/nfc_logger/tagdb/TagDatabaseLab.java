@@ -71,7 +71,7 @@ public class TagDatabaseLab {
         TagDatabaseCursorWrapper cursor = queryTagDatabaseStruct(null,null);
         try {
             cursor.moveToFirst();
-            Log.i(TAG,"Start List <" + cursor.getCount() + "> -->");
+//            Log.i(TAG,"Start List <" + cursor.getCount() + "> -->");
 
             if (cursor.getCount() == 0 ) {
                 Log.i(TAG,"cursor count is 0");
@@ -80,12 +80,12 @@ public class TagDatabaseLab {
 
             while(!cursor.isAfterLast()){
                 TagDatabaseStruct mTagDatabaseStruct = cursor.getTagDatabaseStructbyDB();
-                Log.i(TAG, "" + mTagDatabaseStruct.getVar_payload());
+//                Log.i(TAG, "" + mTagDatabaseStruct.getVar_payload());
                 mTagDatabaseStructList.add(mTagDatabaseStruct);
                 cursor.moveToNext();
             }
         } finally {
-            Log.i(TAG,"<-- End of List");
+//            Log.i(TAG,"<-- End of List");
             cursor.close();
         }
         Log.i(TAG,"mTagDatabaseStructList size: " + mTagDatabaseStructList.size());
@@ -99,7 +99,7 @@ public class TagDatabaseLab {
         TagDatabaseCursorWrapper cursor = queryTagDatabaseStruct(null,null);
         try {
             cursor.moveToFirst();
-            Log.i(TAG,"Start List <" + cursor.getCount() + "> -->");
+//            Log.i(TAG,"Start List <" + cursor.getCount() + "> -->");
 
             if (cursor.getCount() == 0 ) {
                 Log.i(TAG,"cursor count is 0");
@@ -108,13 +108,12 @@ public class TagDatabaseLab {
 
             while(!cursor.isAfterLast()){
                 TagDatabaseStruct mTagDatabaseStruct = cursor.getTagDatabaseStructbyDB();
-                Log.i(TAG, "" + mTagDatabaseStruct.getVar_payload());
-//                mTagDatabaseStructList.add(mTagDatabaseStruct);
+//                Log.i(TAG, "" + mTagDatabaseStruct.getVar_payload());
                 DeleteTagDatabaseStruct(mTagDatabaseStruct);
                 cursor.moveToNext();
             }
         } finally {
-            Log.i(TAG,"<-- End of List");
+//            Log.i(TAG,"<-- End of List");
             cursor.close();
         }
         Log.i(TAG,"mTagDatabaseStructList size: " + mTagDatabaseStructList.size());

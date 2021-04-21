@@ -47,12 +47,14 @@ import android.nfc.Tag;
 import android.nfc.tech.MifareClassic;
 import android.nfc.tech.MifareUltralight;
 import android.nfc.tech.NfcA;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -91,15 +93,14 @@ public class TagViewer extends Activity {
     private TagDatabaseLab mdblab;
 
     public List<TagDatabaseStruct> mTagDatabaseStructList = new ArrayList<TagDatabaseStruct>();
+    private final String TAG="[byJamesL]-TagViewer";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.tag_viewer);
         mTagContent = (LinearLayout) findViewById(R.id.log_list);
-        resolveIntent(getIntent());
-
-        mDialog = new AlertDialog.Builder(this).setNeutralButton("Ok", null).create();
+        Log.d(TAG, "==========resolveIntent(getIntent());====");
 
         mAdapter = NfcAdapter.getDefaultAdapter(this);
         if (mAdapter == null) {
@@ -107,6 +108,11 @@ public class TagViewer extends Activity {
 //            finish();
 //            return;
         }
+
+        Log.d(TAG, "------onCreate---action: " + getIntent().getAction());
+//        getIntent().setAction("");
+        resolveIntent(getIntent());
+        mDialog = new AlertDialog.Builder(this).setNeutralButton("Ok", null).create();
 
         mPendingIntent = PendingIntent.getActivity(this, 0,
                 new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
@@ -116,20 +122,20 @@ public class TagViewer extends Activity {
         mDB = new TagDatabaseHelper(this).getWritableDatabase();
 
         ContentValues values = getContentValues(1);
-//        LoadTagHistory();
-        mdblab = new TagDatabaseLab(this);
-        mTagDatabaseStructList = mdblab.getTagDatabaseStructList();
 
-        mRecyclerView = (RecyclerView) findViewById(R.id.tag_viewer_list);
-//
-//        for (int i = 0; i < 10; i++) {
-//            data.add("列表项" + i);
-//        }
+        if(mdblab == null) {
+            mdblab = new TagDatabaseLab(this);
+            mTagDatabaseStructList = mdblab.getTagDatabaseStructList();
+        }
 
-        mLayoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        mRecyclerViewAdapter = new RecyclerViewAdapter(this, mTagDatabaseStructList);
-        mRecyclerView.setAdapter(mRecyclerViewAdapter);
+        if(mLayoutManager == null) {
+            mRecyclerView = (RecyclerView) findViewById(R.id.tag_viewer_list);
+            mLayoutManager = new LinearLayoutManager(this);
+            mRecyclerView.setLayoutManager(mLayoutManager);
+            mRecyclerViewAdapter = new RecyclerViewAdapter(this, mTagDatabaseStructList);
+            mRecyclerView.setAdapter(mRecyclerViewAdapter);
+        }
+        Log.w(TAG,"oncreate..............");
 
     }
 
@@ -218,6 +224,7 @@ public class TagViewer extends Activity {
                 for (int i = 0; i < rawMsgs.length; i++) {
                     msgs[i] = (NdefMessage) rawMsgs[i];
                 }
+                Log.d(TAG, "resolveIntent.......TECH_DISCOVERED........");
             } else {
                 // Unknown tag type
                 byte[] empty = new byte[0];
@@ -228,7 +235,21 @@ public class TagViewer extends Activity {
                 NdefMessage msg = new NdefMessage(new NdefRecord[] { record });
                 msgs = new NdefMessage[] { msg };
                 mTags.add(tag);
+                Log.d(TAG, "resolveIntent.......Unknown tag type........");
             }
+            if(mdblab == null) {
+                mdblab = new TagDatabaseLab(this);
+                mTagDatabaseStructList = mdblab.getTagDatabaseStructList();
+            }
+
+            if(mLayoutManager == null) {
+                mRecyclerView = (RecyclerView) findViewById(R.id.tag_viewer_list);
+                mLayoutManager = new LinearLayoutManager(this);
+                mRecyclerView.setLayoutManager(mLayoutManager);
+                mRecyclerViewAdapter = new RecyclerViewAdapter(this, mTagDatabaseStructList);
+                mRecyclerView.setAdapter(mRecyclerViewAdapter);
+            }
+            Log.d(TAG, "resolveIntent...............");
             // Setup the views
             buildTagViews(msgs);
         }
@@ -475,7 +496,6 @@ public class TagViewer extends Activity {
         NdefMessage[] var_msgs = new NdefMessage[] { var_msg };
         buildTagViews(var_msgs);
 
-
     }
 
     void buildTagViews(NdefMessage[] msgs) {
@@ -488,8 +508,9 @@ public class TagViewer extends Activity {
         // Parse the first message in the list
         // Build views for all of the sub records
         Date now = new Date();
-        Log.w("james_nfc_log", "TagViewer parse 001 ---------");
+
         List<ParsedNdefRecord> records = NdefMessageParser.parse(msgs[0]);
+        Log.w(TAG, "TagViewer parse 001 --------records.size: " + records.size());
 
         final int size = records.size();
         for (int i = 0; i < size; i++) {
@@ -500,20 +521,19 @@ public class TagViewer extends Activity {
             content.addView(record.getView(this, inflater, content, i), 1 + i);
             content.addView(inflater.inflate(R.layout.tag_divider, content, false), 2 + i);
         }
+        if(records.get(0) == null) {
+            return;
+        }
+
         TagDatabaseStruct mTagDatabaseStruct = new TagDatabaseStruct();
-        int item_count = mRecyclerViewAdapter.getItemCount();
-        mTagDatabaseStruct.setVar_count(item_count+1);
-        mTagDatabaseStruct.setVar_payload("payload_"+item_count);
-        mTagDatabaseStruct.setVar_date(new Date());
-        mRecyclerViewAdapter.addData(item_count+1, mTagDatabaseStruct);
-        mdblab.AddTagDatabaseStruct(mTagDatabaseStruct);
-    }
-
-    @Nullable
-    @Override
-    public View onCreateView(String name, Context context, AttributeSet attrs) {
-
-        return super.onCreateView(name, context, attrs);
+        if(mRecyclerViewAdapter != null) {
+            int item_count = mRecyclerViewAdapter.getItemCount();
+            mTagDatabaseStruct.setVar_count(item_count + 1);
+            mTagDatabaseStruct.setVar_payload("payload_" + item_count);
+            mTagDatabaseStruct.setVar_date(new Date());
+            mRecyclerViewAdapter.addData(item_count + 1, mTagDatabaseStruct);
+            mdblab.AddTagDatabaseStruct(mTagDatabaseStruct);
+        }
     }
 
     @Override
@@ -524,19 +544,28 @@ public class TagViewer extends Activity {
     
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        Log.d(TAG, "mTags size: " + mTags.size());
+        if (mTags.size() == 0) {
+            if (mRecyclerViewAdapter == null) {
+                Toast.makeText(this, R.string.nothing_scanned, Toast.LENGTH_LONG).show();
+                return true;
+            } else {
+                if (mRecyclerViewAdapter.getItemCount() == 0) {
+                    Toast.makeText(this, R.string.nothing_scanned, Toast.LENGTH_LONG).show();
+                    return true;
+                } else {
+                    if(item.getItemId() == R.id.menu_main_clear) {
+                        int i0 = 0;
+                        for (i0 = mRecyclerViewAdapter.getItemCount()-1; i0 >=0; i0--) {
+                            mRecyclerViewAdapter.delData(i0);
+                        }
 
-        if (mTags.size() == 0 && mRecyclerViewAdapter.getItemCount() == 0) {
-            Toast.makeText(this, R.string.nothing_scanned, Toast.LENGTH_LONG).show();
-            return true;
-        } else if (mTags.size() == 0 && mRecyclerViewAdapter.getItemCount() != 0) {
-            if(item.getItemId() == R.id.menu_main_clear) {
-                int i0 = 0;
-                for (i0 = mRecyclerViewAdapter.getItemCount()-1; i0 >=0; i0--) {
-                    mRecyclerViewAdapter.delData(i0);
+                        mdblab.clearTagDatabaseStructList();
+                        return true;
+                    }
                 }
-
-                mdblab.clearTagDatabaseStructList();
             }
+        } else if (mTags.size() == 0) {
             return true;
         }
 
@@ -627,6 +656,9 @@ public class TagViewer extends Activity {
     @Override
     public void onNewIntent(Intent intent) {
         setIntent(intent);
+        Log.d(TAG, "==========resolveIntent(getIntent()); onNewIntent ====");
         resolveIntent(intent);
     }
+
+
 }
