@@ -1,0 +1,3 @@
+/home/james/xprojects/android_dev/nfc/serial/app/.cxx/cmake/debug/x86/CMakeFiles/rebuild_cache.dir
+/home/james/xprojects/android_dev/nfc/serial/app/.cxx/cmake/debug/x86/CMakeFiles/edit_cache.dir
+/home/james/xprojects/android_dev/nfc/serial/app/.cxx/cmake/debug/x86/CMakeFiles/serial_jni.dir

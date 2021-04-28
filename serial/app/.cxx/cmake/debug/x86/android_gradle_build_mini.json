@@ -1,0 +1,20 @@
+{
+  "buildFiles": [
+    "/home/james/xprojects/android_dev/nfc/serial/app/src/main/cpp/CMakeLists.txt",
+    "/home/james/Android/Sdk/ndk/21.1.6352462/build/cmake/android.toolchain.cmake",
+    "/home/james/Android/Sdk/ndk/21.1.6352462/build/cmake/platforms.cmake"
+  ],
+  "cleanCommands": [
+    "/home/james/Android/Sdk/cmake/3.10.2.4988404/bin/ninja -C \"/home/james/xprojects/android_dev/nfc/serial/app/.cxx/cmake/debug/x86\" clean"
+  ],
+  "buildTargetsCommand": "/home/james/Android/Sdk/cmake/3.10.2.4988404/bin/ninja  -C \"/home/james/xprojects/android_dev/nfc/serial/app/.cxx/cmake/debug/x86\" {LIST_OF_TARGETS_TO_BUILD}",
+  "libraries": {
+    "native-lib-Debug-x86": {
+      "artifactName": "native-lib",
+      "buildCommand": "/home/james/Android/Sdk/cmake/3.10.2.4988404/bin/ninja -C \"/home/james/xprojects/android_dev/nfc/serial/app/.cxx/cmake/debug/x86\" native-lib",
+      "abi": "x86",
+      "output": "/home/james/xprojects/android_dev/nfc/serial/app/build/intermediates/cmake/debug/obj/x86/libnative-lib.so",
+      "runtimeFiles": []
+    }
+  }
+}

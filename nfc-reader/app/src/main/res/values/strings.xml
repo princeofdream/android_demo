@@ -15,7 +15,7 @@
      limitations under the License.
 -->
 <resources>
-    <string name="app_name">NFC Reader</string>
+    <string name="app_name">Consys NFC Logger</string>
 <!--    <string name="intro_message">科思上班打卡记录TAG\n&#45;&#45;by JamesLee\n\n</string>-->
     <string name="intro_message">科思上班打卡记录TAG\n\n</string>
     <string name="error">Error</string>
