@@ -13,3 +13,12 @@
 .externalNativeBuild
 .cxx
 local.properties
+
+
+android_serial_api/build/.transforms/
+android_serial_api/build/intermediates/
+android_serial_api/build/outputs/
+android_serial_api/build/tmp/
+
+
+
