@@ -1,2 +1,4 @@
+include ':serialport'
 include ':app'
 rootProject.name = "serial"
+include ':android_serial_api'

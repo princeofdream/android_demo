@@ -1,3 +1,0 @@
-/home/james/xprojects/android_dev/nfc/serial/app/.cxx/cmake/release/armeabi-v7a/CMakeFiles/rebuild_cache.dir
-/home/james/xprojects/android_dev/nfc/serial/app/.cxx/cmake/release/armeabi-v7a/CMakeFiles/edit_cache.dir
-/home/james/xprojects/android_dev/nfc/serial/app/.cxx/cmake/release/armeabi-v7a/CMakeFiles/serial_jni.dir

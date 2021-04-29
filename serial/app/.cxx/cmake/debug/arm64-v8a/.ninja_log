@@ -1,3 +1,0 @@
-# ninja log v5
-0	376	1619618080	CMakeFiles/serial_jni.dir/serial_jni.cpp.o	6c2ce28b21571127
-376	432	1619618080	/home/james/xprojects/android_dev/nfc/serial/app/build/intermediates/cmake/debug/obj/arm64-v8a/libserial_jni.so	8522e5d2c07f1ee5

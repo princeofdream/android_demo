@@ -3,7 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/serial.iml" filepath="$PROJECT_DIR$/.idea/modules/serial.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/android_serial_api/serial.android_serial_api.iml" filepath="$PROJECT_DIR$/.idea/modules/android_serial_api/serial.android_serial_api.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/serial.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/serial.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/serialport/serial.serialport.iml" filepath="$PROJECT_DIR$/.idea/modules/serialport/serial.serialport.iml" />
     </modules>
   </component>
 </project>
