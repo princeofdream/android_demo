@@ -7,12 +7,14 @@ import android.widget.TextView;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Arrays;
 
 import android_serialport_api.SerialPort;
 import android_serialport_api.SerialPortFinder;
 import android_serialport_api.sample.Sending01010101Activity;
+import android_serialport_api.sample.SerialPortActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -26,6 +28,8 @@ public class MainActivity extends AppCompatActivity {
     MainActivity.SendingThread mSendingThread;
     byte[] mBuffer;
     protected OutputStream mOutputStream;
+    private InputStream mInputStream;
+    private MainActivity.ReadThread mReadThread;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +53,11 @@ public class MainActivity extends AppCompatActivity {
                 mSendingThread = new MainActivity.SendingThread();
                 mSendingThread.start();
             }
+            mInputStream = mSerialPort.getInputStream();
+
+            /* Create a receiving thread */
+            mReadThread = new MainActivity.ReadThread();
+            mReadThread.start();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -95,6 +104,54 @@ public class MainActivity extends AppCompatActivity {
             mSerialPort.close();
             mSerialPort = null;
         }
+    }
+
+
+    private class ReadThread extends Thread {
+
+        @Override
+        public void run() {
+            super.run();
+            while(!isInterrupted()) {
+                int size;
+                try {
+                    byte[] buffer = new byte[64];
+                    if (mInputStream == null) return;
+                    size = mInputStream.read(buffer);
+                    if (size > 0) {
+                        onDataReceived(buffer, size);
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    return;
+                }
+            }
+        }
+    }
+    protected void onDataReceived(final byte[] buffer, final int size) {
+        Log.d("byJames", "get data == <" + bytes2Hex(buffer) + ">, size : " + size);
+    }
+
+    private static final char[] HEXES = {
+            '0', '1', '2', '3',
+            '4', '5', '6', '7',
+            '8', '9', 'a', 'b',
+            'c', 'd', 'e', 'f'
+    };
+
+    public static String bytes2Hex(byte[] bytes) {
+        if (bytes == null || bytes.length == 0) {
+            return null;
+        }
+
+        StringBuilder hex = new StringBuilder();
+
+        for (byte b : bytes) {
+            hex.append(HEXES[(b >> 4) & 0x0F]);
+            hex.append(HEXES[b & 0x0F]);
+        }
+
+        return hex.toString();
     }
 
     /**
