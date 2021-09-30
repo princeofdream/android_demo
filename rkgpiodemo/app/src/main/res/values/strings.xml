@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">GPIO Demo</string>
+    <string name="MainActivityTitle">GPIO Sample</string>
+    <string name="ledtext">LED</string>
+    <string name="moreSamplesButtonText">More samples? \nClick here</string>
+    <string name="export_gpio">export gpio</string>
+    <string name="gpio_direction">gpio_direction</string>
+    <string name="read_gpio">read gpio</string>
+    <string name="write_gpio">write gpio</string>
+    <string name="gpio_dirt">toggle gpio direction</string>
+    <string name="str_null"></string>
+	<string name="str_step_one">1. set gpio pin number</string>
+	<string name="str_step_two">2. export gpio</string>
+	<string name="str_step_three">3. set gpio direction in/out</string>
+	<string name="str_step_four">4. read/write gpio</string>
+	<string name="no_pin_set">4. please set pin on step 1</string>
+	<string name="no_pin_num_set">4. please set pin on step 1 with number</string>
+	<string name="str_okay">okay</string>
+	<string name="str_ng">ng</string>
+</resources>
