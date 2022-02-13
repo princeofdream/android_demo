@@ -35,7 +35,8 @@
 
         <activity
             android:name=".MainActivity"
-            android:theme="@style/AppTheme.TransparentBG">
+            android:theme="@style/AppTheme.TransparentBG"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -44,7 +45,8 @@
         </activity>
         <activity
             android:name=".ShowtimeActivity"
-            android:theme="@style/AppTheme.TransparentBG_Dark">
+            android:theme="@style/AppTheme.TransparentBG_Dark"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <!-- <category android:name="android.intent.category.LAUNCHER"/> -->
